@@ -1,0 +1,2 @@
+source /home/samuele/espressif-ide-projects/ESP32-AP/build/bootloader/gdbinit/symbols
+source /home/samuele/espressif-ide-projects/ESP32-AP/build/bootloader/gdbinit/connect

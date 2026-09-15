@@ -17,6 +17,8 @@ with open(OUTPUT_FILE, "a", newline="") as f:
         counter += 1
         if((counter % 100) ==0):
             print(counter)
+        if(counter == 14000):
+            break
         line = ser.readline().decode(errors="ignore").strip()
         if not line or line.count(",") != 3:
             continue                     # salta righe vuote o non-CSV (es. il messaggio di avvio)

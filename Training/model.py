@@ -1,9 +1,19 @@
 """
-Tiny Transformer per TinyNIDS.
+Tiny Transformer per TinyNIDS -- versione ridisegnata sul dataset esteso.
 
-Decisioni di design: d_model=16, 1 layer encoder, 1 testa di attenzione,
-linear attention (feature map elu+1), codifica posizionale sinusoidale fissa,
-feed-forward ff_dim=16, dropout=0.2, max pooling per l'aggregazione finale.
+Decisioni di design (aggiornate per rendere necessaria l'ottimizzazione
+ESP32 -- in float32 il modello supera i 320 KB di SRAM disponibili, in
+int8 post-quantizzazione rientra comodamente): d_model=64, 2 layer
+encoder, 8 teste di attenzione, linear attention (feature map elu+1)
+multi-head, codifica posizionale sinusoidale fissa, feed-forward
+ff_dim=128, dropout=0.35, Pre-LayerNorm (per stabilita' con la
+profondita' aumentata), max pooling per l'aggregazione finale.
+
+Il numero di teste non aumenta il conteggio dei parametri (le proiezioni
+Q/K/V/O restano d_model x d_model, solo suddivise tra le teste): e' quindi
+"gratuito" in termini di rapporto parametri/esempi e viene usato per dare
+al modello piu' capacita' rappresentativa senza aumentare il rischio di
+overfitting.
 """
 
 import numpy as np
@@ -25,17 +35,24 @@ def sinusoidal_positional_encoding(seq_len, d_model):
     return tf.constant(pe)
 
 
-class LinearAttention(layers.Layer):
+class MultiHeadLinearAttention(layers.Layer):
     """
-    Self-attention con complessita' O(N) invece di O(N^2): grazie
-    all'associativita' della moltiplicazione tra matrici, si calcola prima
-    K^T*V (una matrice d x d, piccola) e solo dopo si moltiplica per Q --
-    la matrice N x N dell'attenzione standard non viene mai costruita.
+    Self-attention multi-head con complessita' O(N) invece di O(N^2):
+    grazie all'associativita' della moltiplicazione tra matrici, per ogni
+    testa si calcola prima K^T*V (una matrice head_dim x head_dim, piccola)
+    e solo dopo si moltiplica per Q -- la matrice N x N dell'attenzione
+    standard non viene mai costruita.
+
+    d_model deve essere divisibile per num_heads.
     """
 
-    def __init__(self, d_model, **kwargs):
+    def __init__(self, d_model, num_heads, **kwargs):
         super().__init__(**kwargs)
+        assert d_model % num_heads == 0, "d_model deve essere divisibile per num_heads"
         self.d_model = d_model
+        self.num_heads = num_heads
+        self.head_dim = d_model // num_heads
+
         self.wq = layers.Dense(d_model)
         self.wk = layers.Dense(d_model)
         self.wv = layers.Dense(d_model)
@@ -46,27 +63,45 @@ class LinearAttention(layers.Layer):
         # trucco della linear attention si comporti come dei "pesi" validi.
         return tf.nn.elu(x) + 1.0
 
+    def split_heads(self, x):
+        # (batch, N, d_model) -> (batch, N, num_heads, head_dim)
+        batch = tf.shape(x)[0]
+        seq_len = tf.shape(x)[1]
+        x = tf.reshape(x, (batch, seq_len, self.num_heads, self.head_dim))
+        return x
+
     def call(self, x):
-        q = self.feature_map(self.wq(x))   # (batch, N, d_model)
-        k = self.feature_map(self.wk(x))   # (batch, N, d_model)
-        v = self.wv(x)                      # (batch, N, d_model)
+        q = self.feature_map(self.split_heads(self.wq(x)))   # (batch, N, h, dh)
+        k = self.feature_map(self.split_heads(self.wk(x)))   # (batch, N, h, dh)
+        v = self.split_heads(self.wv(x))                      # (batch, N, h, dh)
 
-        kv = tf.einsum("bnd,bne->bde", k, v)         # (batch, d_model, d_model): mai N x N
-        k_sum = tf.reduce_sum(k, axis=1)              # (batch, d_model)
+        kv = tf.einsum("bnhd,bnhe->bhde", k, v)               # (batch, h, dh, dh): mai N x N
+        k_sum = tf.reduce_sum(k, axis=1)                       # (batch, h, dh)
 
-        numerator = tf.einsum("bnd,bde->bne", q, kv)  # (batch, N, d_model)
-        denominator = tf.einsum("bnd,bd->bn", q, k_sum)
-        denominator = tf.expand_dims(denominator, -1) + 1e-6  # evita divisione per zero
+        numerator = tf.einsum("bnhd,bhde->bnhe", q, kv)        # (batch, N, h, dh)
+        denominator = tf.einsum("bnhd,bhd->bnh", q, k_sum)
+        denominator = tf.expand_dims(denominator, -1) + 1e-6   # evita divisione per zero
 
-        return self.wo(numerator / denominator)
+        out = numerator / denominator                          # (batch, N, h, dh)
+        batch = tf.shape(out)[0]
+        seq_len = tf.shape(out)[1]
+        out = tf.reshape(out, (batch, seq_len, self.d_model))   # concat teste
+
+        return self.wo(out)
 
 
 class EncoderBlock(layers.Layer):
-    """Un blocco encoder: linear attention + feed-forward, entrambi con connessione residua."""
+    """
+    Un blocco encoder Pre-LN: LayerNorm applicata PRIMA di attenzione e
+    feed-forward (non dopo, come nella versione precedente Post-LN), con
+    connessione residua attorno a ciascun sotto-blocco. Il Pre-LN da'
+    gradienti piu' stabili quando si impilano piu' layer, evitando che
+    l'aumento di profondita' renda il training instabile.
+    """
 
-    def __init__(self, d_model, ff_dim, dropout_rate, **kwargs):
+    def __init__(self, d_model, num_heads, ff_dim, dropout_rate, **kwargs):
         super().__init__(**kwargs)
-        self.attention = LinearAttention(d_model)
+        self.attention = MultiHeadLinearAttention(d_model, num_heads)
         self.dropout1 = layers.Dropout(dropout_rate)
         self.norm1 = layers.LayerNormalization()
 
@@ -78,21 +113,26 @@ class EncoderBlock(layers.Layer):
         self.norm2 = layers.LayerNormalization()
 
     def call(self, x, training=False):
-        attn_out = self.dropout1(self.attention(x), training=training)
-        x = self.norm1(x + attn_out)          # residua attorno all'attenzione
+        attn_out = self.attention(self.norm1(x))               # Pre-LN attorno all'attenzione
+        x = x + self.dropout1(attn_out, training=training)
 
-        ff_out = self.dropout2(self.ff(x), training=training)
-        x = self.norm2(x + ff_out)            # residua attorno al feed-forward
+        ff_out = self.ff(self.norm2(x))                         # Pre-LN attorno al feed-forward
+        x = x + self.dropout2(ff_out, training=training)
         return x
 
 
-def build_model(seq_len=20, input_dim=16, d_model=16, ff_dim=16, dropout_rate=0.2):
+def build_model(seq_len=20, input_dim=16, d_model=64, ff_dim=128,
+                 num_layers=2, num_heads=8, dropout_rate=0.35):
     inputs = layers.Input(shape=(seq_len, input_dim))
 
     x = layers.Dense(d_model)(inputs)                        # proiezione 16 -> d_model
     x = x + sinusoidal_positional_encoding(seq_len, d_model)  # inietta l'ordine nella sequenza
 
-    x = EncoderBlock(d_model, ff_dim, dropout_rate)(x)
+    for i in range(num_layers):
+        x = EncoderBlock(d_model, num_heads, ff_dim, dropout_rate,
+                          name=f"encoder_block_{i}")(x)
+
+    x = layers.LayerNormalization(name="final_norm")(x)  # norm finale, prassi comune col Pre-LN
 
     x = layers.GlobalMaxPooling1D()(x)   # max pooling: cattura sia il pattern diffuso (SYN flood)
                                           # sia il singolo pacchetto anomalo (MITM)

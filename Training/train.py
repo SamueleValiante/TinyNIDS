@@ -1,4 +1,4 @@
-"""Addestramento del Tiny Transformer su dataset_preprocessato.npz."""
+"""Addestramento del Tiny Transformer (versione ridisegnata) su dataset_preprocessato.npz."""
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -21,15 +21,45 @@ class_weights = {
 }
 print(f"Class weights: {class_weights}")
 
-model = build_model(seq_len=X_train.shape[1], input_dim=X_train.shape[2])
+# Architettura piu' pesante (dataset esteso): d_model=64, 2 layer encoder,
+# 8 teste di attenzione, ff_dim=128, dropout=0.35. Le teste non aggiungono
+# parametri (proiezioni Q/K/V/O restano d_model x d_model), ma con questa
+# dimensione il modello in float32 (~286 KB) supera gia' la SRAM
+# dell'ESP32 (320 KB totali): rende necessaria la quantizzazione, a
+# differenza della versione precedente che ci sarebbe stata comunque.
+model = build_model(
+    seq_len=X_train.shape[1],
+    input_dim=X_train.shape[2],
+    d_model=64,
+    ff_dim=128,
+    num_layers=2,
+    num_heads=8,
+    dropout_rate=0.35,
+)
+model.summary()
+
+n_params = model.count_params()
+print(f"Parametri totali: {n_params}  |  rapporto param/esempi training: {n_params / len(y_train):.2f}")
+
+# AdamW al posto di Adam: aggiunge weight decay (L2 "disaccoppiato"), utile
+# per contenere l'overfitting ora che il modello ha piu' parametri.
+optimizer = keras.optimizers.AdamW(learning_rate=1e-3, weight_decay=1e-4, clipnorm=1.0)
+
+# Label smoothing leggero sulla BCE: evita che il modello diventi
+# overconfident (probabilita' spinte a 0/1), altra misura anti-overfitting
+# coerente con l'aumento di capacita' del modello.
+loss = keras.losses.BinaryCrossentropy(label_smoothing=0.05)
+
 model.compile(
-    optimizer=keras.optimizers.Adam(learning_rate=1e-3),
-    loss="binary_crossentropy",
+    optimizer=optimizer,
+    loss=loss,
     metrics=["accuracy", keras.metrics.Precision(name="precision"), keras.metrics.Recall(name="recall")],
 )
 
+# Pazienza ricalibrata sul dataset piu' grande (curve di validazione piu'
+# stabili rispetto al dataset precedente, piccolo e poco denso).
 early_stop = keras.callbacks.EarlyStopping(
-    monitor="val_loss", patience=18, restore_best_weights=True
+    monitor="val_loss", patience=20, restore_best_weights=True
 )
 
 history = model.fit(
@@ -50,12 +80,13 @@ model.save("tiny_nids_transformer.keras")
 print("Modello salvato in tiny_nids_transformer.keras")
 
 # Confronto diretto training vs validation, sulle epoche effettivamente eseguite
-# (utile per decidere se l'architettura attuale sotto-adatta o sovra-adatta,
-# come discusso: entrambe alte -> valutare piu' capacita'; solo il validation
-# alto -> overfitting, semmai ridurre).
+# (utile per decidere se l'architettura attuale sotto-adatta o sovra-adatta:
+# entrambe alte -> valutare piu' capacita'; solo il validation alto ->
+# overfitting, allora ridurre capacita' prima di alzare la regolarizzazione).
 train_loss_final = history.history["loss"][-1]
 val_loss_final = history.history["val_loss"][-1]
-print(f"\nLoss finale: training={train_loss_final:.4f}  validation={val_loss_final:.4f}")
+gap = val_loss_final - train_loss_final
+print(f"\nLoss finale: training={train_loss_final:.4f}  validation={val_loss_final:.4f}  gap={gap:.4f}")
 
 # Grafico delle curve, salvato su file per ispezione visiva.
 plt.figure(figsize=(8, 5))
