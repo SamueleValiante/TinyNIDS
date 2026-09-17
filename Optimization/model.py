@@ -14,6 +14,10 @@ Q/K/V/O restano d_model x d_model, solo suddivise tra le teste): e' quindi
 "gratuito" in termini di rapporto parametri/esempi e viene usato per dare
 al modello piu' capacita' rappresentativa senza aumentare il rischio di
 overfitting.
+
+Pruning e weight clustering vengono applicati direttamente sui pesi di
+questo modello (vedi train_optimize.py), senza passare da
+tensorflow-model-optimization: nessuna dipendenza aggiuntiva qui.
 """
 
 import numpy as np
@@ -72,9 +76,16 @@ class MultiHeadLinearAttention(layers.Layer):
 
     def split_heads(self, x):
         # (batch, N, d_model) -> (batch, N, num_heads, head_dim)
-        batch = tf.shape(x)[0]
-        seq_len = tf.shape(x)[1]
-        x = tf.reshape(x, (batch, seq_len, self.num_heads, self.head_dim))
+        # -1 al posto di tf.shape(x)[0]: la dimensione di batch resta
+        # libera senza generare un'operazione SHAPE nel grafo. La
+        # sequence length (x.shape[1]) e' invece nota staticamente in
+        # fase di costruzione del modello (finestre a lunghezza fissa),
+        # quindi va usata come intero Python, non ricalcolata a runtime:
+        # questo evita la catena SHAPE/GATHER/REDUCE_PROD/PACK che
+        # altrimenti il convertitore TFLite genera per ricostruire le
+        # dimensioni dinamicamente.
+        seq_len = x.shape[1]
+        x = tf.reshape(x, (-1, seq_len, self.num_heads, self.head_dim))
         return x
 
     def call(self, x):
@@ -90,9 +101,7 @@ class MultiHeadLinearAttention(layers.Layer):
         denominator = tf.expand_dims(denominator, -1) + 1e-6   # evita divisione per zero
 
         out = numerator / denominator                          # (batch, N, h, dh)
-        batch = tf.shape(out)[0]
-        seq_len = tf.shape(out)[1]
-        out = tf.reshape(out, (batch, seq_len, self.d_model))   # concat teste
+        out = tf.reshape(out, (-1, out.shape[1], self.d_model))  # concat teste, no tf.shape()
 
         return self.wo(out)
 
@@ -164,6 +173,25 @@ def build_model(seq_len=20, input_dim=16, d_model=64, ff_dim=128,
     outputs = layers.Dense(1, activation="sigmoid")(x)
 
     return keras.Model(inputs, outputs, name="tiny_nids_transformer")
+
+
+def get_prunable_dense_layers(model):
+    """
+    Raccoglie i Dense "interni" su cui applicare pruning/clustering manuali:
+    query/key/value/output di ciascun blocco di attenzione, e i due Dense
+    della feed-forward di ciascun EncoderBlock. Esclude deliberatamente la
+    proiezione iniziale (16->d_model) e il classificatore finale (d_model->1):
+    sono piccoli, il grosso dei parametri sta in questi 6 per blocco.
+    """
+    dense_layers = []
+    for layer in model.layers:
+        if isinstance(layer, EncoderBlock):
+            dense_layers.extend([
+                layer.attention.wq, layer.attention.wk,
+                layer.attention.wv, layer.attention.wo,
+                layer.ff.layers[0], layer.ff.layers[1],
+            ])
+    return dense_layers
 
 
 if __name__ == "__main__":
