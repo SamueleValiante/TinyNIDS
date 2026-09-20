@@ -13,6 +13,8 @@ import re
 import numpy as np
 from datetime import datetime
 from collections import Counter
+import json
+
 
 # ============================================================
 # CONFIGURAZIONE
@@ -33,7 +35,6 @@ NUM_PROTOCOLS = len(PROTOCOLS)
 VECTOR_DIM = 4 + 4 + NUM_PROTOCOLS + 1 + 1   # = 16
 IDX_LENGTH = 14
 IDX_DELTA = 15
-
 
 # ============================================================
 # STEP 0: lettura CSV
@@ -242,6 +243,11 @@ def main():
     train_windows = normalize_windows(train_windows, norm_params)
     val_windows = normalize_windows(val_windows, norm_params)
     test_windows = normalize_windows(test_windows, norm_params)
+
+
+    with open("norm_params.json", "w") as f:
+        json.dump(norm_params, f)
+    print(f"Parametri di normalizzazione: {norm_params}")
 
     class_weights = compute_class_weights(train_windows)
     print(f"Pesi di classe (dal training set): {class_weights}")

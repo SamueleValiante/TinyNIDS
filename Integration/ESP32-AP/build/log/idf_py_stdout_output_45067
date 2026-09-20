@@ -1,0 +1,21 @@
+Command: ninja size
+[0/1] cd "/home/samuele/Desktop/Lezioni universita/Tirocinio/TinyNIDS/Integration/ESP32-AP/build" && /usr/bin/cmake -D "IDF_SIZE_TOOL=/home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python;-m;esp_idf_size" -D "MAP_FILE=/home/samuele/Desktop/Lezioni universita/Tirocinio/TinyNIDS/Integration/ESP32-AP/build/app-template.map" -D OUTPUT_JSON= -P /home/samuele/.espressif/v5.5.5/esp-idf/tools/cmake/run_size_tool.cmake
+                             Memory Type Usage Summary                              
+┏━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━┓
+┃ Memory Type/Section   ┃ Used [bytes] ┃ Used [%] ┃ Remain [bytes] ┃ Total [bytes] ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━┩
+│ Flash Code            │       776542 │          │                │               │
+│    .text              │       776542 │          │                │               │
+│ Flash Data            │       281472 │          │                │               │
+│    .rodata            │       281216 │          │                │               │
+│    .appdesc           │          256 │          │                │               │
+│ DRAM                  │       104760 │    57.96 │          75976 │        180736 │
+│    .bss               │        87200 │    48.25 │                │               │
+│    .data              │        17560 │     9.72 │                │               │
+│ IRAM                  │       102151 │    77.94 │          28921 │        131072 │
+│    .text              │       101123 │    77.15 │                │               │
+│    .vectors           │         1028 │     0.78 │                │               │
+│ RTC SLOW              │           56 │     0.68 │           8136 │          8192 │
+│    .force_slow        │           32 │     0.39 │                │               │
+│    .rtc_slow_reserved │           24 │     0.29 │                │               │
+└───────────────────────┴──────────────┴──────────┴────────────────┴───────────────┘

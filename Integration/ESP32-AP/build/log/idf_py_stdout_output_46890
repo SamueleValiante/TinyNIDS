@@ -1,0 +1,581 @@
+Command: /home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python /home/samuele/.espressif/v5.5.5/esp-idf/tools/idf_monitor.py -p /dev/ttyUSB0 -b 115200 --toolchain-prefix xtensa-esp32-elf- --target esp32 --revision 0 /home/samuele/Desktop/Lezioni universita/Tirocinio/TinyNIDS/Integration/ESP32-AP/build/app-template.elf /home/samuele/Desktop/Lezioni universita/Tirocinio/TinyNIDS/Integration/ESP32-AP/build/bootloader/bootloader.elf -m '/home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python' '/home/samuele/.espressif/v5.5.5/esp-idf/tools/idf.py' '-p' '/dev/ttyUSB0'
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6280
+load:0x40078000,len:15836
+ho 0 tail 12 room 4
+load:0x40080400,len:3920
+entry 0x40080644
+[0;32mI (29) boot: ESP-IDF v5.5.5 2nd stage bootloader[0m
+[0;32mI (29) boot: compile time Sep 18 2026 13:56:39[0m
+[0;32mI (29) boot: Multicore bootloader[0m
+[0;32mI (31) boot: chip revision: v3.1[0m
+[0;32mI (33) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (37) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (41) boot.esp32: SPI Flash Size : 2MB[0m
+[0;32mI (44) boot: Enabling RNG early entropy source...[0m
+[0;32mI (49) boot: Partition Table:[0m
+[0;32mI (51) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (58) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (64) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (71) boot:  2 factory          factory app      00 00 00010000 00177000[0m
+[0;32mI (77) boot: End of partition table[0m
+[0;32mI (81) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=44b30h (281392) map[0m
+[0;32mI (184) esp_image: segment 1: paddr=00054b58 vaddr=3ffb0000 size=04498h ( 17560) load[0m
+[0;32mI (191) esp_image: segment 2: paddr=00058ff8 vaddr=40080000 size=07020h ( 28704) load[0m
+[0;32mI (203) esp_image: segment 3: paddr=00060020 vaddr=400d0020 size=bd9b8h (776632) map[0m
+[0;32mI (468) esp_image: segment 4: paddr=0011d9e0 vaddr=40087020 size=11ee8h ( 73448) load[0m
+[0;32mI (497) esp_image: segment 5: paddr=0012f8d0 vaddr=50000000 size=00020h (    32) load[0m
+[0;32mI (510) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (510) boot: Disabling RNG early entropy source...[0m
+[0;32mI (521) cpu_start: Multicore app[0m
+[0;32mI (529) cpu_start: GPIO 3 and 1 are used as console UART I/O pins[0m
+[0;32mI (529) cpu_start: Pro cpu start user code[0m
+[0;32mI (529) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (531) app_init: Application information:[0m
+[0;32mI (535) app_init: Project name:     app-template[0m
+[0;32mI (539) app_init: App version:      51f26e1-dirty[0m
+[0;32mI (544) app_init: Compile time:     Sep 18 2026 13:56:31[0m
+[0;32mI (549) app_init: ELF file SHA256:  052035b3b...[0m
+[0;32mI (553) app_init: ESP-IDF:          v5.5.5[0m
+[0;32mI (557) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (561) efuse_init: Max chip rev:     v3.99 [0m
+[0;32mI (565) efuse_init: Chip rev:         v3.1[0m
+[0;32mI (569) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (575) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (580) heap_init: At 3FFC9940 len 000166C0 (89 KiB): DRAM[0m
+[0;32mI (585) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (590) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (596) heap_init: At 40098F08 len 000070F8 (28 KiB): IRAM[0m
+[0;33mW (602) spi_flash: Detected boya flash chip but using generic driver. For optimal functionality, enable `SPI_FLASH_SUPPORT_BOYA_CHIP` in menuconfig[0m
+[0;32mI (614) spi_flash: detected chip: generic[0m
+[0;32mI (618) spi_flash: flash io: dio[0m
+[0;33mW (621) spi_flash: Detected size(4096k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;32mI (634) main_task: Started on CPU0[0m
+[0;32mI (636) main_task: Calling app_main()[0m
+[0;32mI (671) u�rtI (1677) wifi:wifi driver task: 3ffd313c, prio:23, stack:6656, core=0[0m
+[0;32mI (1696) wifi:wifi firmware version: b9f67df[0m
+[0;32mI (1696) wifi:wifi certification version: v7.0[0m
+[0;32mI (1696) wifi:config NVS flash: enabled[0m
+[0;32mI (1697) wifi:config nano formatting: disabled[0m
+[0;32mI (1701) wifi:Init data frame dynamic rx buffer num: 32[0m
+[0;32mI (1706) wifi:Init static rx mgmt buffer num: 5[0m
+[0;32mI (1710) wifi:Init management short buffer num: 32[0m
+[0;32mI (1715) wifi:Init dynamic tx buffer num: 32[0m
+[0;32mI (1719) wifi:Init static rx buffer size: 1600[0m
+[0;32mI (1723) wifi:Init static rx buffer num: 4[0m
+[0;32mI (1726) wifi:Init dynamic rx buffer num: 32[0m
+[0;32mI (1732) wifi_init: rx ba win: 6[0m
+[0;32mI (1733) wifi_init: accept mbox: 6[0m
+[0;32mI (1736) wifi_init: tcpip mbox: 32[0m
+[0;32mI (1740) wifi_init: udp mbox: 6[0m
+[0;32mI (1742) wifi_init: tcp mbox: 6[0m
+[0;32mI (1745) wifi_init: tcp tx win: 5760[0m
+[0;32mI (1749) wifi_init: tcp rx win: 5760[0m
+[0;32mI (1752) wifi_init: tcp mss: 1440[0m
+[0;32mI (1755) wifi_init: WiFi IRAM OP enabled[0m
+[0;32mI (1758) wifi_init: WiFi RX IRAM OP enabled[0m
+[0;32mI (1767) phy_init: phy_version 4863,a3a4459,Oct 28 2025,14:30:06[0m
+[1;31mE (1769) phy_init: load_cal_data_from_nvs_handle: failed to get cal_data(0x1102)[0m
+[0;33mW (1775) phy_init: failed to load RF calibration data (0x1102), falling back to full calibration[0m
+[0;32mI (1857) phy_init: Saving new calibration data due to checksum failure or outdated calibration data, mode(2)[0m
+[0;32mI (1872) wifi:mode : sta (28:05:a5:34:86:20) + softAP (28:05:a5:34:86:21)[0m
+[0;32mI (1873) wifi:enable tsf[0m
+[0;32mI (1874) wifi:Total power save buffer number: 16[0m
+[0;32mI (1875) wifi:Init max length of beacon: 752/752[0m
+[0;32mI (1880) wifi:Init max length of beacon: 752/752[0m
+[0;32mI (1886) wifi:Set ps type: 1, coexist: 0[0m
+
+[0;32mI (1888) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1[0m
+
+
+Wifi mode is on
+Connessione verso il wifi d'appoggio...I (2898) wifi:ap channel adjust o:1,1 n:4,1
+[0;32mI (2899) wifi:new:<4,1>, old:<1,1>, ap:<4,1>, sta:<4,1>, prof:1, snd_ch_cfg:0x0[0m
+[0;32mI (2900) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (2907) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (2914) wifi:state: assoc -> run (0x10)[0m
+[0;32mI (2926) wifi:connected with TP-LINK_8972, aid = 2, channel 4, 40U, bssid = 18:a6:f7:ea:89:72[0m
+[0;32mI (2927) wifi:security: WPA2-PSK, phy: bgn, rssi: -62, cipher(pairwise:0x3, group:0x3), pmf:0[0m
+[0;32mI (2936) wifi:pm start, type: 1[0m
+
+[0;32mI (2936) wifi:dp: 1, bi: 102400, li: 3, scale listen interval from 307200 us to 307200 us[0m
+[0;32mI (2950) wifi:<ba-add>idx:0 (ifx:0, 18:a6:f7:ea:89:72), tid:0, ssn:0, winSize:64[0m
+[0;32mI (2963) wifi:AP's beacon interval = 102400 us, DTIM period = 1[0m
+..I (3955) esp_netif_handlers: sta ip: 192.168.1.108, mask: 255.255.255.0, gw: 192.168.1.1
+.
+Connesso! IP STA: 192.168.1.108
+ESP32 avviato come Access Point: IP: 192.168.4.1
+NAPT abilitato con successo!
+Risultato esp_netif_dhcps_option: ESP_OK
+DHCP server riavviato con DNS configurato
+[0;32mI (5404) wifi:ic_enable_sniffer[0m
+Tensor arena usata: 41064 / 65536 byte
+[0;32mI (55149) wifi:station: 00:45:e2:b7:e5:8b join, AID=1, bgn, 40U[0m
+[0;32mI (55162) esp_netif_lwip: DHCP server assigned IP to a client, IP is: 192.168.4.2[0m
+[0;32mI (55168) wifi:<ba-add>idx:2 (ifx:1, 00:45:e2:b7:e5:8b), tid:0, ssn:1, winSize:64[0m
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[0;32mI (74987) wifi:station: 5a:55:58:46:27:15 join, AID=2, bgn, 20[0m
+[0;32mI (75889) esp_netif_lwip: DHCP server assigned IP to a client, IP is: 192.168.4.3[0m
+[0;32mI (76305) wifi:<ba-add>idx:3 (ifx:1, 5a:55:58:46:27:15), tid:0, ssn:16, winSize:64[0m
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[1;31mE (358955) task_wdt: Task watchdog got triggered. The following tasks/users did not reset the watchdog in time:[0m
+[1;31mE (358955) task_wdt:  - IDLE1 (CPU 1)[0m
+[1;31mE (358955) task_wdt: Tasks currently running:[0m
+[1;31mE (358955) task_wdt: CPU 0: wifi[0m
+[1;31mE (358955) task_wdt: CPU 1: tinynids_infere[0m
+[1;31mE (358955) task_wdt: Print CPU 1 backtrace[0m
+
+
+Backtrace: 0x40084306:0x3FFB2630 0x40083225:0x3FFB2650 0x401028D1:0x3FFDF7E0 0x400FABE1:0x3FFDF820 0x400FE61A:0x3FFDFB00 0x400E6B16:0x3FFDFB30 0x400DC26D:0x3FFDFB50 0x400DC8B2:0x3FFDFCC0 0x4008A795:0x3FFDFD40
+
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[0;32mI (375468) wifi:station: 5a:55:58:46:27:15 leave, AID = 2, reason = 3, bss_flags is 33721443, bss:0x3ffe0a24[0m
+[0;32mI (375469) wifi:<ba-del>idx:3, tid:0[0m
+[0;32mI (392898) wifi:station: 5a:55:58:46:27:15 join, AID=2, bgn, 20[0m
+[0;32mI (393354) esp_netif_lwip: DHCP server assigned IP to a client, IP is: 192.168.4.3[0m
+[TinyNIDS] probabilita'=0.0000 -> normale
+[0;32mI (394118) esp_netif_lwip: DHCP server assigned IP to a client, IP is: 192.168.4.3[0m
+[0;32mI (394460) wifi:state: run -> init (0x6c0)[0m
+[0;32mI (394464) wifi:pm stop, total sleep time: 288227607 us / 391527936 us[0m
+
+[0;32mI (394464) wifi:<ba-del>idx:0, tid:0[0m
+[0;32mI (394538) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (395193) wifi:<ba-add>idx:3 (ifx:1, 5a:55:58:46:27:15), tid:0, ssn:16, winSize:64[0m
+[TinyNIDS] probabilita'=0.0000 -> normale
+[0;32mI (395542) wifi:state: auth -> init (0x200)[0m
+[0;32mI (395562) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (396567) wifi:state: auth -> init (0x200)[0m
+[0;32mI (396586) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (397591) wifi:state: auth -> init (0x200)[0m
+[0;32mI (397610) wifi:state: init -> auth (0xb0)[0m
+[TinyNIDS] probabilita'=0.0000 -> normale
+[0;32mI (398614) wifi:state: auth -> init (0x200)[0m
+[0;32mI (398634) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (398647) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (399649) wifi:state: assoc -> init (0x400)[0m
+[0;32mI (399760) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (400765) wifi:state: auth -> init (0x200)[0m
+[0;32mI (400784) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (400807) wifi:state: auth -> assoc (0x0)[0m
+[TinyNIDS] probabilita'=0.0000 -> normale
+[0;32mI (401809) wifi:state: assoc -> init (0x400)[0m
+[0;32mI (401911) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (401927) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (402929) wifi:state: assoc -> init (0x400)[0m
+[0;32mI (403037) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (404041) wifi:state: auth -> init (0x200)[0m
+[0;32mI (404061) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (405066) wifi:state: auth -> init (0x200)[0m
+[0;32mI (405085) wifi:state: init -> auth (0xb0)[0m
+[TinyNIDS] probabilita'=0.0000 -> normale
+[0;32mI (406089) wifi:state: auth -> init (0x200)[0m
+[0;32mI (406109) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (406144) wifi:station: 5a:55:58:46:27:15 leave, AID = 2, reason = 3, bss_flags is 33721443, bss:0x3ffe0eb4[0m
+[0;32mI (406146) wifi:<ba-del>idx:3, tid:0[0m
+[0;32mI (407114) wifi:state: auth -> init (0x200)[0m
+[0;32mI (407133) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (408137) wifi:state: auth -> init (0x200)[0m
+[0;32mI (408157) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (409162) wifi:state: auth -> init (0x200)[0m
+[0;32mI (409181) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (410185) wifi:state: auth -> init (0x200)[0m
+[0;32mI (410205) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (410218) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (411220) wifi:state: assoc -> init (0x400)[0m
+[0;32mI (411331) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (412336) wifi:state: auth -> init (0x200)[0m
+[0;32mI (412356) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (413359) wifi:state: auth -> init (0x200)[0m
+[0;32mI (413380) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (414384) wifi:state: auth -> init (0x200)[0m
+[0;32mI (414403) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (415407) wifi:state: auth -> init (0x200)[0m
+[0;32mI (415427) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (416432) wifi:state: auth -> init (0x200)[0m
+[0;32mI (416451) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (417455) wifi:state: auth -> init (0x200)[0m
+[0;32mI (417475) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (418480) wifi:state: auth -> init (0x200)[0m
+[0;32mI (418499) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (418522) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (419524) wifi:state: assoc -> init (0x400)[0m
+[0;32mI (419626) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (420630) wifi:state: auth -> init (0x200)[0m
+[0;32mI (420650) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (420664) wifi:state: auth -> assoc (0x0)[0m
+[TinyNIDS] probabilita'=0.0000 -> normale
+[0;32mI (421666) wifi:state: assoc -> init (0x400)[0m
+[0;32mI (421776) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (421790) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (422792) wifi:state: assoc -> init (0x400)[0m
+[0;32mI (422903) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (422919) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (423921) wifi:state: assoc -> init (0x400)[0m
+[0;32mI (424029) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (425033) wifi:state: auth -> init (0x200)[0m
+[0;32mI (425053) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (425064) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (426066) wifi:state: assoc -> init (0x400)[0m
+[0;32mI (426179) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (426205) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (427207) wifi:state: assoc -> init (0x400)[0m
+[0;32mI (427306) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (428310) wifi:state: auth -> init (0x200)[0m
+[0;32mI (428432) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (428443) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (429445) wifi:state: assoc -> init (0x400)[0m
+[0;32mI (429558) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (429581) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (429619) wifi:state: assoc -> run (0x10)[0m
+[0;32mI (432629) wifi:state: run -> init (0xf00)[0m
+[0;32mI (432733) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (433737) wifi:state: auth -> init (0x200)[0m
+[0;32mI (433757) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (433764) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (433811) wifi:state: assoc -> run (0x10)[0m
+[0;32mI (434533) wifi:station: 5a:55:58:46:27:15 join, AID=2, bgn, 20[0m
+[0;32mI (434660) esp_netif_lwip: DHCP server assigned IP to a client, IP is: 192.168.4.3[0m
+[0;32mI (435699) esp_netif_lwip: DHCP server assigned IP to a client, IP is: 192.168.4.3[0m
+[0;32mI (436826) wifi:state: run -> init (0xf00)[0m
+[0;32mI (437264) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (437927) esp_netif_lwip: DHCP server assigned IP to a client, IP is: 192.168.4.3[0m
+[0;32mI (438169) wifi:<ba-add>idx:3 (ifx:1, 5a:55:58:46:27:15), tid:0, ssn:16, winSize:64[0m
+[0;32mI (438268) wifi:state: auth -> init (0x200)[0m
+[0;32mI (438366) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (438376) wifi:state: auth -> assoc (0x0)[0m
+[TinyNIDS] probabilita'=0.0000 -> normale
+[0;32mI (439378) wifi:state: assoc -> init (0x400)[0m
+[0;32mI (439491) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (439500) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (439526) wifi:state: assoc -> run (0x10)[0m
+[0;32mI (440547) wifi:connected with TP-LINK_8972, aid = 2, channel 4, 40U, bssid = 18:a6:f7:ea:89:72[0m
+[0;32mI (440548) wifi:security: WPA2-PSK, phy: bgn, rssi: -70, cipher(pairwise:0x3, group:0x3), pmf:0[0m
+[0;32mI (440557) wifi:pm start, type: 1[0m
+
+[0;32mI (440614) wifi:AP's beacon interval = 102400 us, DTIM period = 1[0m
+[0;32mI (440617) wifi:<ba-add>idx:0 (ifx:0, 18:a6:f7:ea:89:72), tid:0, ssn:0, winSize:64[0m
+[0;32mI (440683) wifi:<ba-clr>idx:0, tid:0, ssn:0, winSize:64[0m
+[0;32mI (441685) esp_netif_handlers: sta ip: 192.168.1.108, mask: 255.255.255.0, gw: 192.168.1.1[0m
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[0;32mI (1679) wifi:wifi driver task: 3ffd31c0, prio:23, stack:6656, core=0[0m
+[0;32mI (1698) wifi:wifi firmware version: b9f67df[0m
+[0;32mI (1698) wifi:wifi certification version: v7.0[0m
+[0;32mI (1699) wifi:config NVS flash: enabled[0m
+[0;32mI (1699) wifi:config nano formatting: disabled[0m
+[0;32mI (1703) wifi:Init data frame dynamic rx buffer num: 32[0m
+[0;32mI (1708) wifi:Init static rx mgmt buffer num: 5[0m
+[0;32mI (1712) wifi:Init management short buffer num: 32[0m
+[0;32mI (1717) wifi:Init dynamic tx buffer num: 32[0m
+[0;32mI (1721) wifi:Init static rx buffer size: 1600[0m
+[0;32mI (1725) wifi:Init static rx buffer num: 4[0m
+[0;32mI (1729) wifi:Init dynamic rx buffer num: 32[0m
+[0;32mI (1734) wifi_init: rx ba win: 6[0m
+[0;32mI (1736) wifi_init: accept mbox: 6[0m
+[0;32mI (1739) wifi_init: tcpip mbox: 32[0m
+[0;32mI (1742) wifi_init: udp mbox: 6[0m
+[0;32mI (1745) wifi_init: tcp mbox: 6[0m
+[0;32mI (1747) wifi_init: tcp tx win: 5760[0m
+[0;32mI (1751) wifi_init: tcp rx win: 5760[0m
+[0;32mI (1754) wifi_init: tcp mss: 1440[0m
+[0;32mI (1757) wifi_init: WiFi IRAM OP enabled[0m
+[0;32mI (1761) wifi_init: WiFi RX IRAM OP enabled[0m
+[0;32mI (1769) phy_init: phy_version 4863,a3a4459,Oct 28 2025,14:30:06[0m
+[0;32mI (1862) wifi:mode : sta (28:05:a5:34:86:20) + softAP (28:05:a5:34:86:21)[0m
+[0;32mI (1863) wifi:enable tsf[0m
+[0;32mI (1865) wifi:Total power save buffer number: 16[0m
+[0;32mI (1865) wifi:Init max length of beacon: 752/752[0m
+[0;32mI (1870) wifi:Init max length of beacon: 752/752[0m
+[0;32mI (1876) wifi:Set ps type: 1, coexist: 0[0m
+
+[0;32mI (1878) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1[0m
+
+
+Wifi mode is on
+Connessione verso il wifi d'appoggio...I (2889) wifi:ap channel adjust o:1,1 n:4,1
+[0;32mI (2890) wifi:new:<4,1>, old:<1,1>, ap:<4,1>, sta:<4,1>, prof:1, snd_ch_cfg:0x0[0m
+[0;32mI (2891) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (2899) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (2909) wifi:state: assoc -> run (0x10)[0m
+[0;32mI (2925) wifi:connected with TP-LINK_8972, aid = 2, channel 4, 40U, bssid = 18:a6:f7:ea:89:72[0m
+[0;32mI (2926) wifi:security: WPA2-PSK, phy: bgn, rssi: -74, cipher(pairwise:0x3, group:0x3), pmf:0[0m
+[0;32mI (2935) wifi:pm start, type: 1[0m
+
+[0;32mI (2935) wifi:dp: 1, bi: 102400, li: 3, scale listen interval from 307200 us to 307200 us[0m
+[0;32mI (2949) wifi:<ba-add>idx:0 (ifx:0, 18:a6:f7:ea:89:72), tid:0, ssn:0, winSize:64[0m
+[0;32mI (3022) wifi:AP's beacon interval = 102400 us, DTIM period = 1[0m
+..I (3955) esp_netif_handlers: sta ip: 192.168.1.108, mask: 255.255.255.0, gw: 192.168.1.1
+.
+Connesso! IP STA: 192.168.1.108
+ESP32 avviato come Access Point: IP: 192.168.4.1
+NAPT abilitato con successo!
+Risultato esp_netif_dhcps_option: ESP_OK
+DHCP server riavviato con DNS configurato
+[0;32mI (5394) wifi:ic_enable_sniffer[0m
+Tensor arena usata: 41064 / 65536 byte
+[0;32mI (13352) wifi:station: 00:45:e2:b7:e5:8b join, AID=1, bgn, 40U[0m
+[0;32mI (13370) wifi:<ba-add>idx:2 (ifx:1, 00:45:e2:b7:e5:8b), tid:0, ssn:1, winSize:64[0m
+[0;32mI (13379) esp_netif_lwip: DHCP server assigned IP to a client, IP is: 192.168.4.2[0m
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[0;32mI (17235) wifi:station: 5a:55:58:46:27:15 join, AID=2, bgn, 20[0m
+[0;32mI (17753) esp_netif_lwip: DHCP server assigned IP to a client, IP is: 192.168.4.3[0m
+[TinyNIDS] probabilita'=0.0000 -> normale
+[0;32mI (18237) wifi:<ba-add>idx:3 (ifx:1, 5a:55:58:46:27:15), tid:0, ssn:16, winSize:64[0m
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyNIDS] probabilita'=0.0000 -> normale
+[TinyN

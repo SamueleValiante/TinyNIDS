@@ -1,0 +1,3 @@
+clangd_path=/home/samuele/.espressif/tools/esp-clang/esp-19.1.2_20250312/esp-clang/bin/clangd
+eclipse.preferences.version=1
+query_driver=**

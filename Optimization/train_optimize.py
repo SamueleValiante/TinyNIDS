@@ -222,29 +222,35 @@ class ClusteringCallback(keras.callbacks.Callback):
         self.dense_layers = dense_layers
         self.n_clusters = n_clusters
         self.centroids = []
+        self.zero_masks = []  # congelata all'inizio: NON va ricalcolata dal kernel
+                               # corrente, altrimenti un peso potato che si sposta
+                               # anche di poco per effetto del gradiente smette di
+                               # essere riconosciuto come zero e viene "riassorbito"
+                               # nel cluster piu' vicino invece di restare a zero.
 
     def on_train_begin(self, logs=None):
         for layer in self.dense_layers:
             kernel = layer.kernel.numpy()
-            nonzero = kernel[kernel != 0]
+            zero_mask = (kernel == 0)
+            self.zero_masks.append(zero_mask)
+            nonzero = kernel[~zero_mask]
             if len(nonzero) >= self.n_clusters:
                 centroids = kmeans_1d(nonzero, self.n_clusters)
             else:
                 centroids = np.unique(nonzero) if len(nonzero) > 0 else np.array([0.0])
             self.centroids.append(centroids)
-            self._snap(layer, centroids)
+            self._snap(layer, centroids, zero_mask)
 
-    def _snap(self, layer, centroids):
+    def _snap(self, layer, centroids, zero_mask):
         kernel = layer.kernel.numpy()
-        zero_mask = (kernel == 0)
         distances = np.abs(kernel[:, :, None] - centroids[None, None, :])
         nearest = centroids[np.argmin(distances, axis=-1)]
-        nearest[zero_mask] = 0.0     # i pesi potati restano a zero
+        nearest[zero_mask] = 0.0     # maschera fissa: i pesi potati restano a zero
         layer.kernel.assign(nearest)
 
     def on_train_batch_end(self, batch, logs=None):
-        for layer, centroids in zip(self.dense_layers, self.centroids):
-            self._snap(layer, centroids)
+        for layer, centroids, zero_mask in zip(self.dense_layers, self.centroids, self.zero_masks):
+            self._snap(layer, centroids, zero_mask)
 
 
 clustered_model = build_model(
@@ -269,7 +275,11 @@ clustered_model.fit(
     verbose=2,
 )
 
-# verifica: quanti valori distinti restano per kernel (dovrebbe essere <= n_clusters + lo zero)
+# verifica: sparsita' (deve essere rimasta al target del pruning) e numero
+# di valori distinti per kernel (dovrebbe essere <= n_clusters + lo zero)
+post_zeros = sum(int(np.sum(l.kernel.numpy() == 0)) for l in clusterable_layers)
+post_total = sum(l.kernel.numpy().size for l in clusterable_layers)
+print(f"  Sparsita' dopo il clustering: {post_zeros/post_total:.1%} (deve restare ~{PRUNING_FINAL_SPARSITY:.0%})")
 for layer in clusterable_layers[:2]:
     n_unique = len(np.unique(layer.kernel.numpy()))
     print(f"  {layer.name}: {n_unique} valori distinti nel kernel")
