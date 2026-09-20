@@ -1,0 +1,390 @@
+Executing action: flash
+Running ninja in directory '/home/samuele/Desktop/Lezioni universita/Tirocinio/TinyNIDS/Integration/ESP32-AP/build'
+Executing "ninja flash"...
+[1/10] Performing build step for 'bootloader'
+[1/1] cd "/home/samuele/Desktop/Lezioni universita/Tirocinio/TinyNIDS/Integration/ESP32-AP/build/bootloader/esp-idf/esptool_py" && /home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python /home/samuele/.espressif/v5.5.5/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x1000 /home/samuele/Desktop/Lezioni\ universita/Tirocinio/TinyNIDS/Integration/ESP32-AP/build/bootloader/bootloader.bin
+Bootloader binary size 0x6610 bytes. 0x9f0 bytes (9%) free.
+[2/10] No install step for 'bootloader'
+[3/10] Completed 'bootloader'
+[4/10] Building CXX object esp-idf/main/CMakeFiles/__idf_main.dir/main.cpp.obj
+[5/10] Linking C static library esp-idf/main/libmain.a
+[6/10] Generating esp-idf/esp_system/ld/sections.ld
+[7/10] Linking CXX executable app-template.elf
+[8/10] Generating binary image from built executable
+esptool.py v4.12.0
+Creating esp32 image...
+Merged 2 ELF sections
+Successfully created esp32 image.
+Generated /home/samuele/Desktop/Lezioni universita/Tirocinio/TinyNIDS/Integration/ESP32-AP/build/app-template.bin
+[9/10] cd "/home/samuele/Desktop/Lezioni universita/Tirocinio/TinyNIDS/Integration/ESP32-AP/build/esp-idf/esptool_py" && /home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python /home/samuele/.espressif/v5.5.5/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/samuele/Desktop/Lezioni\ universita/Tirocinio/TinyNIDS/Integration/ESP32-AP/build/partition_table/partition-table.bin /home/samuele/Desktop/Lezioni\ universita/Tirocinio/TinyNIDS/Integration/ESP32-AP/build/app-template.bin
+app-template.bin binary size 0x11f9b0 bytes. Smallest app partition is 0x177000 bytes. 0x57650 bytes (23%) free.
+[9/10] cd /home/samuele/.espressif/v5.5.5/esp-idf/components/esptool_py && /usr/bin/cmake -D IDF_PATH=/home/samuele/.espressif/v5.5.5/esp-idf -D "SERIAL_TOOL=/home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python;;/home/samuele/.espressif/v5.5.5/esp-idf/components/esptool_py/esptool/esptool.py;--chip;esp32" -D "SERIAL_TOOL_ARGS=--before=default_reset;--after=hard_reset;write_flash;@flash_args" -D "WORKING_DIRECTORY=/home/samuele/Desktop/Lezioni universita/Tirocinio/TinyNIDS/Integration/ESP32-AP/build" -P /home/samuele/.espressif/v5.5.5/esp-idf/components/esptool_py/run_serial_tool.cmake
+esptool.py --chip esp32 -p /dev/ttyUSB0 -b 460800 --before=default_reset --after=hard_reset write_flash --flash_mode dio --flash_freq 40m --flash_size 2MB 0x1000 bootloader/bootloader.bin 0x10000 app-template.bin 0x8000 partition_table/partition-table.bin
+esptool.py v4.12.0
+Serial port /dev/ttyUSB0
+Connecting.........
+Chip is ESP32-D0WD-V3 (revision v3.1)
+Features: WiFi, BT, Dual Core, 240MHz, VRef calibration in efuse, Coding Scheme None
+Crystal is 40MHz
+MAC: 28:05:a5:34:86:20
+Uploading stub...
+Running stub...
+Stub running...
+Changing baud rate to 460800
+Changed.
+Configuring flash size...
+Flash will be erased from 0x00001000 to 0x00007fff...
+Flash will be erased from 0x00010000 to 0x0012ffff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+SHA digest in image updated
+Compressed 26128 bytes to 16495...
+Writing at 0x00001000... (50 %)
+Writing at 0x00007577... (100 %)
+Wrote 26128 bytes (16495 compressed) at 0x00001000 in 0.7 seconds (effective 278.8 kbit/s)...
+Hash of data verified.
+Compressed 1178032 bytes to 718037...
+Writing at 0x00010000... (2 %)
+Writing at 0x0001d730... (4 %)
+Writing at 0x00029d91... (6 %)
+Writing at 0x0003529c... (9 %)
+Writing at 0x0003dd7b... (11 %)
+Writing at 0x00046459... (13 %)
+Writing at 0x0004e1ad... (15 %)
+Writing at 0x0005930e... (18 %)
+Writing at 0x0005efb1... (20 %)
+Writing at 0x00064c6f... (22 %)
+Writing at 0x0006a7b7... (25 %)
+Writing at 0x00070d5f... (27 %)
+Writing at 0x00076835... (29 %)
+Writing at 0x0007ba59... (31 %)
+Writing at 0x0008165c... (34 %)
+Writing at 0x00086f5f... (36 %)
+Writing at 0x0008c4e0... (38 %)
+Writing at 0x00091d43... (40 %)
+Writing at 0x00097c64... (43 %)
+Writing at 0x0009d6aa... (45 %)
+Writing at 0x000a358d... (47 %)
+Writing at 0x000a9374... (50 %)
+Writing at 0x000aee83... (52 %)
+Writing at 0x000b50d4... (54 %)
+Writing at 0x000bae53... (56 %)
+Writing at 0x000c0c11... (59 %)
+Writing at 0x000c68ab... (61 %)
+Writing at 0x000ccf73... (63 %)
+Writing at 0x000d2c99... (65 %)
+Writing at 0x000d8633... (68 %)
+Writing at 0x000ddbdb... (70 %)
+Writing at 0x000e3421... (72 %)
+Writing at 0x000e8fc4... (75 %)
+Writing at 0x000ee96a... (77 %)
+Writing at 0x000f4117... (79 %)
+Writing at 0x000f9ac7... (81 %)
+Writing at 0x000ff7d4... (84 %)
+Writing at 0x00105441... (86 %)
+Writing at 0x0010ada7... (88 %)
+Writing at 0x001134ef... (90 %)
+Writing at 0x001194e8... (93 %)
+Writing at 0x0011f629... (95 %)
+Writing at 0x00125a57... (97 %)
+Writing at 0x0012ae4f... (100 %)
+Wrote 1178032 bytes (718037 compressed) at 0x00010000 in 16.8 seconds (effective 562.6 kbit/s)...
+Hash of data verified.
+Compressed 3072 bytes to 105...
+Writing at 0x00008000... (100 %)
+Wrote 3072 bytes (105 compressed) at 0x00008000 in 0.1 seconds (effective 489.1 kbit/s)...
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...
+Executing action: monitor
+Running idf_monitor in directory '/home/samuele/Desktop/Lezioni universita/Tirocinio/TinyNIDS/Integration/ESP32-AP'
+Executing "/home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python /home/samuele/.espressif/v5.5.5/esp-idf/tools/idf_monitor.py -p /dev/ttyUSB0 -b 115200 --toolchain-prefix xtensa-esp32-elf- --target esp32 --revision 0 '/home/samuele/Desktop/Lezioni universita/Tirocinio/TinyNIDS/Integration/ESP32-AP/build/app-template.elf' '/home/samuele/Desktop/Lezioni universita/Tirocinio/TinyNIDS/Integration/ESP32-AP/build/bootloader/bootloader.elf' -m '/home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python' '/home/samuele/.espressif/v5.5.5/esp-idf/tools/idf.py' '-p' '/dev/ttyUSB0'"...
+d0020 size=bd9c0h (776640) map
+ets Jul 29 2019 12:21:46
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:2
+load:0x3fff0030,len:6280
+load:0x40078000,len:15836
+ho 0 tail 12 room 4
+load:0x40080400,len:3920
+entry 0x40080644
+[0;32mI (29) boot: ESP-IDF v5.5.5 2nd stage bootloader[0m
+[0;32mI (29) boot: compile time Sep 18 2026 13:56:39[0m
+[0;32mI (29) boot: Multicore bootloader[0m
+[0;32mI (31) boot: chip revision: v3.1[0m
+[0;32mI (33) boot.esp32: SPI Speed      : 40MHz[0m
+[0;32mI (37) boot.esp32: SPI Mode       : DIO[0m
+[0;32mI (41) boot.esp32: SPI Flash Size : 2MB[0m
+[0;32mI (44) boot: Enabling RNG early entropy source...[0m
+[0;32mI (49) boot: Partition Table:[0m
+[0;32mI (51) boot: ## Label            Usage          Type ST Offset   Length[0m
+[0;32mI (58) boot:  0 nvs              WiFi data        01 02 00009000 00006000[0m
+[0;32mI (64) boot:  1 phy_init         RF data          01 01 0000f000 00001000[0m
+[0;32mI (71) boot:  2 factory          factory app      00 00 00010000 00177000[0m
+[0;32mI (77) boot: End of partition table[0m
+[0;32mI (81) esp_image: segment 0: paddr=00010020 vaddr=3f400020 size=44bc0h (281536) map[0m
+[0;32mI (184) esp_image: segment 1: paddr=00054be8 vaddr=3ffb0000 size=04498h ( 17560) load[0m
+[0;32mI (191) esp_image: segment 2: paddr=00059088 vaddr=40080000 size=06f90h ( 28560) load[0m
+[0;32mI (202) esp_image: segment 3: paddr=00060020 vaddr=400d0020 size=bd9c0h (776640) map[0m
+[0;32mI (468) esp_image: segment 4: paddr=0011d9e8 vaddr=40086f90 size=11f78h ( 73592) load[0m
+[0;32mI (497) esp_image: segment 5: paddr=0012f968 vaddr=50000000 size=00020h (    32) load[0m
+[0;32mI (510) boot: Loaded app from partition at offset 0x10000[0m
+[0;32mI (510) boot: Disabling RNG early entropy source...[0m
+[0;32mI (521) cpu_start: Multicore app[0m
+[0;32mI (529) cpu_start: GPIO 3 and 1 are used as console UART I/O pins[0m
+[0;32mI (529) cpu_start: Pro cpu start user code[0m
+[0;32mI (529) cpu_start: cpu freq: 160000000 Hz[0m
+[0;32mI (531) app_init: Application information:[0m
+[0;32mI (535) app_init: Project name:     app-template[0m
+[0;32mI (539) app_init: App version:      51f26e1-dirty[0m
+[0;32mI (544) app_init: Compile time:     Sep 18 2026 13:56:31[0m
+[0;32mI (549) app_init: ELF file SHA256:  f5fbe3ad9...[0m
+[0;32mI (553) app_init: ESP-IDF:          v5.5.5[0m
+[0;32mI (557) efuse_init: Min chip rev:     v0.0[0m
+[0;32mI (561) efuse_init: Max chip rev:     v3.99 [0m
+[0;32mI (565) efuse_init: Chip rev:         v3.1[0m
+[0;32mI (569) heap_init: Initializing. RAM available for dynamic allocation:[0m
+[0;32mI (575) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM[0m
+[0;32mI (580) heap_init: At 3FFC9940 len 000166C0 (89 KiB): DRAM[0m
+[0;32mI (585) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM[0m
+[0;32mI (590) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM[0m
+[0;32mI (596) heap_init: At 40098F08 len 000070F8 (28 KiB): IRAM[0m
+[0;33mW (602) spi_flash: Detected boya flash chip but using generic driver. For optimal functionality, enable `SPI_FLASH_SUPPORT_BOYA_CHIP` in menuconfig[0m
+[0;32mI (614) spi_flash: detected chip: generic[0m
+[0;32mI (618) spi_flash: flash io: dio[0m
+[0;33mW (621) spi_flash: Detected size(4096k) larger than the size in the binary image header(2048k). Using the size in the binary image header.[0m
+[0;32mI (634) main_task: Started on CPU0[0m
+[0;32mI (636) main_task: Calling app_main()[0m
+[0;32mI (672) u�rtI (1679) wifi:wifi driver task: 3ffd31c0, prio:23, stack:6656, core=0[0m
+[0;32mI (1698) wifi:wifi firmware version: b9f67df[0m
+[0;32mI (1698) wifi:wifi certification version: v7.0[0m
+[0;32mI (1699) wifi:config NVS flash: enabled[0m
+[0;32mI (1699) wifi:config nano formatting: disabled[0m
+[0;32mI (1703) wifi:Init data frame dynamic rx buffer num: 32[0m
+[0;32mI (1708) wifi:Init static rx mgmt buffer num: 5[0m
+[0;32mI (1712) wifi:Init management short buffer num: 32[0m
+[0;32mI (1717) wifi:Init dynamic tx buffer num: 32[0m
+[0;32mI (1721) wifi:Init static rx buffer size: 1600[0m
+[0;32mI (1725) wifi:Init static rx buffer num: 4[0m
+[0;32mI (1729) wifi:Init dynamic rx buffer num: 32[0m
+[0;32mI (1734) wifi_init: rx ba win: 6[0m
+[0;32mI (1736) wifi_init: accept mbox: 6[0m
+[0;32mI (1739) wifi_init: tcpip mbox: 32[0m
+[0;32mI (1742) wifi_init: udp mbox: 6[0m
+[0;32mI (1745) wifi_init: tcp mbox: 6[0m
+[0;32mI (1747) wifi_init: tcp tx win: 5760[0m
+[0;32mI (1751) wifi_init: tcp rx win: 5760[0m
+[0;32mI (1754) wifi_init: tcp mss: 1440[0m
+[0;32mI (1757) wifi_init: WiFi IRAM OP enabled[0m
+[0;32mI (1761) wifi_init: WiFi RX IRAM OP enabled[0m
+[0;32mI (1769) phy_init: phy_version 4863,a3a4459,Oct 28 2025,14:30:06[0m
+[0;32mI (1856) wifi:mode : sta (28:05:a5:34:86:20) + softAP (28:05:a5:34:86:21)[0m
+[0;32mI (1857) wifi:enable tsf[0m
+[0;32mI (1859) wifi:Total power save buffer number: 16[0m
+[0;32mI (1859) wifi:Init max length of beacon: 752/752[0m
+[0;32mI (1864) wifi:Init max length of beacon: 752/752[0m
+[0;32mI (1870) wifi:Set ps type: 1, coexist: 0[0m
+
+[0;32mI (1872) esp_netif_lwip: DHCP server started on interface WIFI_AP_DEF with IP: 192.168.4.1[0m
+
+
+Wifi mode is on
+Connessione verso il wifi d'appoggio...I (2882) wifi:ap channel adjust o:1,1 n:4,1
+[0;32mI (2883) wifi:new:<4,1>, old:<1,1>, ap:<4,1>, sta:<4,1>, prof:1, snd_ch_cfg:0x0[0m
+[0;32mI (2884) wifi:state: init -> auth (0xb0)[0m
+[0;32mI (2892) wifi:state: auth -> assoc (0x0)[0m
+[0;32mI (2899) wifi:state: assoc -> run (0x10)[0m
+[0;32mI (2911) wifi:connected with TP-LINK_8972, aid = 4, channel 4, 40U, bssid = 18:a6:f7:ea:89:72[0m
+[0;32mI (2912) wifi:security: WPA2-PSK, phy: bgn, rssi: -64, cipher(pairwise:0x3, group:0x3), pmf:0[0m
+[0;32mI (2920) wifi:pm start, type: 1[0m
+
+[0;32mI (2921) wifi:dp: 1, bi: 102400, li: 3, scale listen interval from 307200 us to 307200 us[0m
+[0;32mI (2935) wifi:<ba-add>idx:0 (ifx:0, 18:a6:f7:ea:89:72), tid:0, ssn:0, winSize:64[0m
+[0;32mI (2976) wifi:AP's beacon interval = 102400 us, DTIM period = 1[0m
+..I (3940) esp_netif_handlers: sta ip: 192.168.1.108, mask: 255.255.255.0, gw: 192.168.1.1
+.
+Connesso! IP STA: 192.168.1.108
+ESP32 avviato come Access Point: IP: 192.168.4.1
+NAPT abilitato con successo!
+Risultato esp_netif_dhcps_option: ESP_OK
+DHCP server riavviato con DNS configurato
+[0;32mI (5388) wifi:ic_enable_sniffer[0m
+[DEBUG] input tensor type=1 bytes=1280, output tensor type=1 bytes=4
+Tensor arena usata: 41064 / 65536 byte
+[0;32mI (10415) wifi:station: 5a:55:58:46:27:15 join, AID=1, bgn, 20[0m
+[DEBUG] pacchetto #1: proto=17 len=378 src=0.0.0.0 dst=255.255.255.255
+[DEBUG] pacchetto #2: proto=17 len=378 src=0.0.0.0 dst=255.255.255.255
+[DEBUG] pacchetto #3: proto=17 len=378 src=0.0.0.0 dst=255.255.255.255
+[DEBUG] pacchetto #4: proto=17 len=374 src=0.0.0.0 dst=255.255.255.255
+[0;32mI (11566) esp_netif_lwip: DHCP server assigned IP to a client, IP is: 192.168.4.2[0m
+[DEBUG] pacchetto #5: proto=17 len=384 src=0.0.0.0 dst=255.255.255.255
+[DEBUG] pacchetto #6: proto=17 len=384 src=0.0.0.0 dst=255.255.255.255
+[0;32mI (12573) esp_netif_lwip: DHCP server assigned IP to a client, IP is: 192.168.4.2[0m
+[DEBUG] pacchetto #7: proto=901 len=66 src=192.168.4.2 dst=192.168.4.1
+[DEBUG] pacchetto #8: proto=6 len=338 src=192.168.4.2 dst=8.8.8.8
+[DEBUG] pacchetto #9: proto=17 len=1266 src=192.168.4.2 dst=8.8.8.8
+[DEBUG] pacchetto #10: proto=17 len=104 src=192.168.4.2 dst=8.8.8.8
+[0;32mI (12659) wifi:<ba-add>idx:2 (ifx:1, 5a:55:58:46:27:15), tid:0, ssn:16, winSize:64[0m
+[DEBUG] pacchetto #20: proto=6 len=98 src=192.168.4.2 dst=192.178.202.110
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #40: proto=6 len=659 src=192.168.4.2 dst=192.178.202.110
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #60: proto=6 len=90 src=192.168.4.2 dst=192.178.202.94
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #80: proto=6 len=90 src=192.168.4.2 dst=142.251.154.119
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #100: proto=17 len=97 src=192.168.4.2 dst=8.8.8.8
+[0;32mI (15837) wifi:station: 00:45:e2:b7:e5:8b join, AID=2, bgn, 40U[0m
+[TinyNIDS] probabilita'=0.0156 -> normale
+[0;32mI (15864) wifi:<ba-add>idx:3 (ifx:1, 00:45:e2:b7:e5:8b), tid:0, ssn:1, winSize:64[0m
+[0;32mI (15874) esp_netif_lwip: DHCP server assigned IP to a client, IP is: 192.168.4.4[0m
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #120: proto=6 len=90 src=192.168.4.2 dst=173.194.69.188
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #140: proto=901 len=66 src=0.0.0.0 dst=192.168.4.4
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #160: proto=17 len=95 src=192.168.4.4 dst=8.8.8.8
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #180: proto=6 len=1490 src=192.168.4.4 dst=34.107.243.93
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #200: proto=6 len=1538 src=192.168.4.4 dst=160.79.104.10
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #220: proto=6 len=90 src=192.168.4.4 dst=151.101.1.91
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #240: proto=6 len=90 src=192.168.4.4 dst=34.107.243.93
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #260: proto=6 len=114 src=192.168.4.4 dst=151.101.193.91
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #280: proto=6 len=98 src=192.168.4.2 dst=8.8.8.8
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #300: proto=6 len=188 src=192.168.4.4 dst=160.79.104.10
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #320: proto=17 len=1318 src=192.168.4.4 dst=160.79.104.10
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #340: proto=6 len=90 src=192.168.4.4 dst=172.64.41.4
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #360: proto=6 len=90 src=192.168.4.2 dst=43.131.19.73
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #380: proto=17 len=102 src=192.168.4.4 dst=8.8.8.8
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #400: proto=6 len=161 src=192.168.4.4 dst=51.195.119.126
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #420: proto=17 len=110 src=192.168.4.4 dst=8.8.8.8
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #440: proto=6 len=90 src=192.168.4.2 dst=43.131.19.73
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #460: proto=17 len=126 src=192.168.4.2 dst=8.8.8.8
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #480: proto=6 len=90 src=192.168.4.2 dst=142.251.150.119
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #500: proto=17 len=97 src=192.168.4.2 dst=142.251.150.119
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #520: proto=6 len=90 src=192.168.4.2 dst=43.131.19.73
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #540: proto=17 len=144 src=192.168.4.2 dst=172.217.115.4
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #560: proto=17 len=1316 src=192.168.4.2 dst=172.217.116.4
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #580: proto=6 len=114 src=192.168.4.4 dst=160.79.104.10
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #600: proto=17 len=121 src=192.168.4.4 dst=160.79.104.10
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #620: proto=17 len=110 src=192.168.4.4 dst=8.8.8.8
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #640: proto=6 len=279 src=192.168.4.4 dst=172.64.41.4
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #660: proto=6 len=90 src=192.168.4.4 dst=51.195.119.126
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #680: proto=901 len=66 src=192.168.4.4 dst=192.168.4.2
+[TinyNIDS] probabilita'=0.0195 -> normale
+[0;32mI (319006) wifi:station: 5a:55:58:46:27:15 leave, AID = 1, reason = 3, bss_flags is 33721459, bss:0x3ffe05e4[0m
+[0;32mI (319008) wifi:<ba-del>idx:2, tid:0[0m
+[0;32mI (322990) wifi:station: 5a:55:58:46:27:15 join, AID=1, bgn, 20[0m
+[0;32mI (323441) esp_netif_lwip: DHCP server assigned IP to a client, IP is: 192.168.4.2[0m
+[0;32mI (323872) wifi:<ba-add>idx:2 (ifx:1, 5a:55:58:46:27:15), tid:0, ssn:16, winSize:64[0m
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #700: proto=17 len=1266 src=192.168.4.2 dst=8.8.8.8
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #720: proto=6 len=98 src=192.168.4.2 dst=192.178.202.110
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #740: proto=6 len=308 src=192.168.4.2 dst=192.178.202.110
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #760: proto=6 len=90 src=192.168.4.2 dst=192.178.202.94
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #780: proto=6 len=90 src=192.168.4.2 dst=192.178.202.110
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #800: proto=6 len=90 src=192.168.4.2 dst=150.138.37.168
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #820: proto=6 len=145 src=192.168.4.2 dst=157.240.231.61
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #840: proto=17 len=97 src=192.168.4.2 dst=8.8.8.8
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #860: proto=6 len=78 src=192.168.4.2 dst=43.158.3.142
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #880: proto=901 len=66 src=192.168.4.4 dst=192.168.4.2
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #900: proto=6 len=1372 src=192.168.4.2 dst=43.131.19.73
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #920: proto=901 len=66 src=192.168.4.4 dst=192.168.4.1
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #940: proto=6 len=279 src=192.168.4.4 dst=172.64.41.4
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0312 -> normale
+[DEBUG] pacchetto #960: proto=6 len=90 src=192.168.4.4 dst=172.64.41.4
+[TinyNIDS] probabilita'=0.0312 -> normale
+[TinyNIDS] probabilita'=0.0195 -> normale
+[DEBUG] pacchetto #980: proto=6 len=170 src=192.168.4.2 dst=43.131.19.73
+[TinyNIDS] probabilita'=0.0195 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #1000: proto=17 len=102 src=192.168.4.2 dst=8.8.8.8
+[TinyNIDS] probabilita'=0.0156 -> normale
+[TinyNIDS] probabilita'=0.0156 -> normale
+[DEBUG] pacchetto #1020: proto=6 len=279 src=192.168.4.4 dst=172.64.41.4
+[TinyNIDS] probabilita'=0.0195 -> normale

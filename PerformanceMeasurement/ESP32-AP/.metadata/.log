@@ -1,0 +1,333 @@
+!SESSION 2026-09-18 11:37:15.934 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=21.0.6
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.launchbar.core 2 0 2026-09-18 11:38:03.025
+!MESSAGE Enablement expression is missing for descriptor type com.espressif.idf.debug.gdbjtag.openocd.descriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2026-09-18 11:38:03.026
+!MESSAGE Enablement expression is missing for config provider for com.espressif.idf.debug.gdbjtag.openocd.descriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2026-09-18 11:38:03.027
+!MESSAGE Enablement expression is missing for config provider for com.espressif.idf.launch.serial.core.idf.descriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2026-09-18 11:38:03.027
+!MESSAGE Enablement expression is missing for descriptor type com.espressif.idf.launch.serial.core.idf.descriptorType
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:03.095
+!MESSAGE eim_idf.json detected, but no last seen state — assuming first run.
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:03.250
+!MESSAGE Watcher added to the directory: /home/samuele/.espressif/tools
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:03.484
+!MESSAGE ESP-IDF path is null or empty, cannot read targets
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:03.484
+!MESSAGE Dynamically loaded 0 toolchain elements from ESP-IDF
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:03.574
+!MESSAGE ESP-IDF path is null or empty, cannot read targets
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:03.575
+!MESSAGE Dynamically loaded 0 toolchain elements from ESP-IDF
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:03.575
+!MESSAGE Initializing toolchain...
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:03.575
+!MESSAGE idf_tools.py path: null/tools/idf_tools.py
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:03.575
+!MESSAGE idf_tools.py path doesn't exist
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:03.576
+!MESSAGE [/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/platform-tools:/var/lib/flatpak/exports/bin:/opt/flutter/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/samuele/.local/bin:/home/samuele/.local/bin]
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:03.708
+!MESSAGE testRun: null
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:03.727
+!MESSAGE eimPath from eim_idf.json does not exist: /home/samuele/.espressif/eim_gui/eim_v0.19.0 (deleted)
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.827
+!MESSAGE PATH=/home/samuele/.espressif/tools/esp-clang/esp-19.1.2_20250312/esp-clang/bin:/home/samuele/.espressif/tools/esp-rom-elfs/20241011/:/home/samuele/.espressif/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/bin:/home/samuele/.espressif/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/esp32ulp-elf/bin:/home/samuele/.espressif/tools/ninja/1.12.1/:/home/samuele/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260424/openocd-esp32/bin:/home/samuele/.espressif/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin:/home/samuele/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin:/home/samuele/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/riscv32-esp-elf/bin:/home/samuele/.espressif/tools/xtensa-esp-elf-gdb/17.1_20260402/xtensa-esp-elf-gdb/bin:/home/samuele/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/bin:/home/samuele/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/xtensa-esp-elf/bin:/home/samuele/.espressif/tools/python/v5.5.5/venv/bin
+SYSTEM_PATH=/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/platform-tools:/home/samuele/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:/opt/flutter/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/samuele/.local/bin:/home/samuele/.local/bin:/opt/android-sdk/platform-tools:/opt/flutter/bin:/home/samuele/.local/bin:/home/samuele/.espressif/v5.5.5/esp-idf:/home/samuele/.espressif/tools
+ESP_IDF_VERSION=5.5
+IDF_VERSION=5.5.5
+IDF_TOOLS_PATH=/home/samuele/.espressif/tools
+IDF_COMPONENT_LOCAL_STORAGE_URL=file:///home/samuele/.espressif/tools
+IDF_PATH=/home/samuele/.espressif/v5.5.5/esp-idf
+ESP_ROM_ELF_DIR=/home/samuele/.espressif/tools/esp-rom-elfs/20241011/
+OPENOCD_SCRIPTS=/home/samuele/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260424/openocd-esp32/share/openocd/scripts
+IDF_PYTHON_ENV_PATH=/home/samuele/.espressif/tools/python/v5.5.5/venv
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.828
+!MESSAGE Processing output from activation script
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.829
+!MESSAGE Setting up IDE environment variables
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.830
+!MESSAGE Updating environment variables with key:PATH value:/home/samuele/.espressif/tools/esp-clang/esp-19.1.2_20250312/esp-clang/bin:/home/samuele/.espressif/tools/esp-rom-elfs/20241011/:/home/samuele/.espressif/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/bin:/home/samuele/.espressif/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/esp32ulp-elf/bin:/home/samuele/.espressif/tools/ninja/1.12.1/:/home/samuele/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260424/openocd-esp32/bin:/home/samuele/.espressif/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin:/home/samuele/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin:/home/samuele/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/riscv32-esp-elf/bin:/home/samuele/.espressif/tools/xtensa-esp-elf-gdb/17.1_20260402/xtensa-esp-elf-gdb/bin:/home/samuele/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/bin:/home/samuele/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/xtensa-esp-elf/bin:/home/samuele/.espressif/tools/python/v5.5.5/venv/bin
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.831
+!MESSAGE Updating environment variables with key:IDF_TOOLS_PATH value:/home/samuele/.espressif/tools
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.832
+!MESSAGE Updating environment variables with key:SYSTEM_PATH value:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/platform-tools:/home/samuele/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:/opt/flutter/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/samuele/.local/bin:/home/samuele/.local/bin:/opt/android-sdk/platform-tools:/opt/flutter/bin:/home/samuele/.local/bin:/home/samuele/.espressif/v5.5.5/esp-idf:/home/samuele/.espressif/tools
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.833
+!MESSAGE Updating environment variables with key:OPENOCD_SCRIPTS value:/home/samuele/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260424/openocd-esp32/share/openocd/scripts
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.834
+!MESSAGE Updating environment variables with key:IDF_PATH value:/home/samuele/.espressif/v5.5.5/esp-idf
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.835
+!MESSAGE Updating environment variables with key:IDF_VERSION value:5.5.5
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.835
+!MESSAGE Updating environment variables with key:IDF_COMPONENT_LOCAL_STORAGE_URL value:file:///home/samuele/.espressif/tools
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.836
+!MESSAGE Updating environment variables with key:ESP_IDF_VERSION value:5.5
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.837
+!MESSAGE Updating environment variables with key:IDF_PYTHON_ENV_PATH value:/home/samuele/.espressif/tools/python/v5.5.5/venv
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.838
+!MESSAGE Updating environment variables with key:ESP_ROM_ELF_DIR value:/home/samuele/.espressif/tools/esp-rom-elfs/20241011/
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.839
+!MESSAGE Updating environment variables with key:PATH value:/home/samuele/.espressif/tools/esp-clang/esp-19.1.2_20250312/esp-clang/bin:/home/samuele/.espressif/tools/esp-rom-elfs/20241011/:/home/samuele/.espressif/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/bin:/home/samuele/.espressif/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/esp32ulp-elf/bin:/home/samuele/.espressif/tools/ninja/1.12.1/:/home/samuele/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260424/openocd-esp32/bin:/home/samuele/.espressif/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin:/home/samuele/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin:/home/samuele/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/riscv32-esp-elf/bin:/home/samuele/.espressif/tools/xtensa-esp-elf-gdb/17.1_20260402/xtensa-esp-elf-gdb/bin:/home/samuele/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/bin:/home/samuele/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/xtensa-esp-elf/bin:/home/samuele/.espressif/tools/python/v5.5.5/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/platform-tools:/home/samuele/.local/share/flatpak/exports/bin:/var/lib/flatpak/exports/bin:/opt/flutter/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/samuele/.local/bin:/home/samuele/.local/bin:/opt/android-sdk/platform-tools:/opt/flutter/bin:/home/samuele/.local/bin:/home/samuele/.espressif/v5.5.5/esp-idf:/home/samuele/.espressif/tools
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.840
+!MESSAGE Updating environment variables with key:IDF_COMPONENT_MANAGER value:1
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.840
+!MESSAGE Updating environment variables with key:IDF_MAINTAINER value:1
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.841
+!MESSAGE Updating environment variables with key:ESP_IDF_EIM_ID value:esp-idf-08e6e2bc3c9a404ab247d4531166a453
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.842
+!MESSAGE Updating environment variables with key:PYTHON_EXE_PATH value:/home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.843
+!MESSAGE Setting up toolchains
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:05.844
+!MESSAGE Executing:[/home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python, /home/samuele/.espressif/v5.5.5/esp-idf/tools/idf.py, --list-targets]
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:07.099
+!MESSAGE esp32
+esp32s2
+esp32c3
+esp32s3
+esp32c2
+esp32c6
+esp32h2
+esp32p4
+esp32c5
+esp32c61
+
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:07.101
+!MESSAGE Successfully read 10 supported targets and 3 preview targets
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:07.101
+!MESSAGE Dynamically loaded 13 toolchain elements from ESP-IDF
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:07.103
+!MESSAGE Successfully read 10 supported targets and 3 preview targets
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:07.104
+!MESSAGE Dynamically loaded 13 toolchain elements from ESP-IDF
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:07.107
+!MESSAGE Initializing toolchain...
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:07.108
+!MESSAGE idf_tools.py path: /home/samuele/.espressif/v5.5.5/esp-idf/tools/idf_tools.py
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:07.108
+!MESSAGE [/home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python, /home/samuele/.espressif/v5.5.5/esp-idf/tools/idf_tools.py, export, --format=key-value]
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:07.496
+!MESSAGE idf_tools.py export output: Not using an unsupported version of tool esp-clang found in PATH: unknown. To use it, run '/home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python /home/samuele/.espressif/v5.5.5/esp-idf/tools/idf_tools.py export --prefer-system'
+Not using an unsupported version of tool ninja found in PATH: 1.13.2. To use it, run '/home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python /home/samuele/.espressif/v5.5.5/esp-idf/tools/idf_tools.py export --prefer-system'
+WARNING: The following issue occurred while accessing the ESP-IDF version file in the Python environment: [Errno 2] No such file or directory: '/home/samuele/.espressif/python_env/idf5.5_py3.14_env/idf_version.txt'. (Diagnostic information. It can be ignored.)
+OPENOCD_SCRIPTS=/home/samuele/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260424/openocd-esp32/share/openocd/scripts
+ESP_ROM_ELF_DIR=/home/samuele/.espressif/tools/esp-rom-elfs/20241011/
+ESP_IDF_VERSION=5.5
+PATH=/home/samuele/.espressif/tools/xtensa-esp-elf-gdb/17.1_20260402/xtensa-esp-elf-gdb/bin:/home/samuele/.espressif/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin:/home/samuele/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/bin:/home/samuele/.espressif/tools/esp-clang/esp-19.1.2_20250312/esp-clang/bin:/home/samuele/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin:/home/samuele/.espressif/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/bin:/home/samuele/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260424/openocd-esp32/bin:/home/samuele/.espressif/tools/ninja/1.12.1/:/home/samuele/.espressif/v5.5.5/esp-idf/tools:$PATH
+IDF_DEACTIVATE_FILE_PATH=/tmp/tmpbk49uc_cidf_37251
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:07.496
+!MESSAGE PATH: /home/samuele/.espressif/tools/xtensa-esp-elf-gdb/17.1_20260402/xtensa-esp-elf-gdb/bin:/home/samuele/.espressif/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin:/home/samuele/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/bin:/home/samuele/.espressif/tools/esp-clang/esp-19.1.2_20250312/esp-clang/bin:/home/samuele/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin:/home/samuele/.espressif/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/bin:/home/samuele/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260424/openocd-esp32/bin:/home/samuele/.espressif/tools/ninja/1.12.1/:/home/samuele/.espressif/v5.5.5/esp-idf/tools:$PATH
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:07.496
+!MESSAGE [/home/samuele/.espressif/tools/xtensa-esp-elf-gdb/17.1_20260402/xtensa-esp-elf-gdb/bin:/home/samuele/.espressif/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin:/home/samuele/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/bin:/home/samuele/.espressif/tools/esp-clang/esp-19.1.2_20250312/esp-clang/bin:/home/samuele/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin:/home/samuele/.espressif/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/bin:/home/samuele/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260424/openocd-esp32/bin:/home/samuele/.espressif/tools/ninja/1.12.1/:/home/samuele/.espressif/v5.5.5/esp-idf/tools:$PATH]
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:07.566
+!MESSAGE Applying Clangd Preferences
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-18 11:38:07.592
+!MESSAGE Tools Setup complete
+
+!ENTRY org.eclipse.ui.workbench 4 2 2026-09-18 11:38:25.777
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.ui.workbench".
+!STACK 0
+java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because "pathName" is null
+	at org.eclipse.ui.internal.ReopenEditorMenu.calcText(ReopenEditorMenu.java:106)
+	at org.eclipse.ui.internal.ReopenEditorMenu.calcText(ReopenEditorMenu.java:79)
+	at org.eclipse.ui.internal.ReopenEditorMenu$1.run(ReopenEditorMenu.java:227)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.ui.internal.ReopenEditorMenu.fill(ReopenEditorMenu.java:224)
+	at org.eclipse.jface.action.MenuManager.doItemFill(MenuManager.java:727)
+	at org.eclipse.jface.action.MenuManager.update(MenuManager.java:804)
+	at org.eclipse.jface.action.MenuManager.handleAboutToShow(MenuManager.java:468)
+	at org.eclipse.jface.action.MenuManager$2.menuShown(MenuManager.java:493)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:297)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:91)
+	at org.eclipse.swt.widgets.Display.sendEvent(Display.java:5845)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1656)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1682)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1661)
+	at org.eclipse.swt.widgets.Menu.gtk_show(Menu.java:854)
+	at org.eclipse.swt.widgets.Widget.windowProc(Widget.java:2600)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:6146)
+	at org.eclipse.swt.internal.gtk3.GTK3.gtk_main_iteration_do(Native Method)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:4494)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:339)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1051)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:153)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:684)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:339)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:583)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:173)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:185)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:219)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:149)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:115)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:467)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:298)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:615)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:563)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1415)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1387)
+
+!ENTRY org.eclipse.ui 4 4 2026-09-18 11:38:25.778
+!MESSAGE Exception in org.eclipse.ui.internal.ReopenEditorMenu$1.fill: java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because "pathName" is null
+!STACK 0
+java.lang.NullPointerException: Cannot invoke "String.equals(Object)" because "pathName" is null
+	at org.eclipse.ui.internal.ReopenEditorMenu.calcText(ReopenEditorMenu.java:106)
+	at org.eclipse.ui.internal.ReopenEditorMenu.calcText(ReopenEditorMenu.java:79)
+	at org.eclipse.ui.internal.ReopenEditorMenu$1.run(ReopenEditorMenu.java:227)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:47)
+	at org.eclipse.ui.internal.ReopenEditorMenu.fill(ReopenEditorMenu.java:224)
+	at org.eclipse.jface.action.MenuManager.doItemFill(MenuManager.java:727)
+	at org.eclipse.jface.action.MenuManager.update(MenuManager.java:804)
+	at org.eclipse.jface.action.MenuManager.handleAboutToShow(MenuManager.java:468)
+	at org.eclipse.jface.action.MenuManager$2.menuShown(MenuManager.java:493)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:297)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:91)
+	at org.eclipse.swt.widgets.Display.sendEvent(Display.java:5845)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1656)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1682)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1661)
+	at org.eclipse.swt.widgets.Menu.gtk_show(Menu.java:854)
+	at org.eclipse.swt.widgets.Widget.windowProc(Widget.java:2600)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:6146)
+	at org.eclipse.swt.internal.gtk3.GTK3.gtk_main_iteration_do(Native Method)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:4494)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine$5.run(PartRenderingEngine.java:1160)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:339)
+	at org.eclipse.e4.ui.internal.workbench.swt.PartRenderingEngine.run(PartRenderingEngine.java:1051)
+	at org.eclipse.e4.ui.internal.workbench.E4Workbench.createAndRunUI(E4Workbench.java:153)
+	at org.eclipse.ui.internal.Workbench.lambda$3(Workbench.java:684)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:339)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:583)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:173)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:185)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:219)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:149)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:115)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:467)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:298)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:615)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:563)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1415)
+	at org.eclipse.equinox.launcher.Main.main(Main.java:1387)
+!SESSION 2026-09-20 13:53:07.243 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=21.0.6
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.launchbar.core 2 0 2026-09-20 13:53:19.263
+!MESSAGE Enablement expression is missing for descriptor type com.espressif.idf.debug.gdbjtag.openocd.descriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2026-09-20 13:53:19.264
+!MESSAGE Enablement expression is missing for config provider for com.espressif.idf.debug.gdbjtag.openocd.descriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2026-09-20 13:53:19.265
+!MESSAGE Enablement expression is missing for config provider for com.espressif.idf.launch.serial.core.idf.descriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2026-09-20 13:53:19.265
+!MESSAGE Enablement expression is missing for descriptor type com.espressif.idf.launch.serial.core.idf.descriptorType
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-20 13:53:19.313
+!MESSAGE eim_idf.json detected, but no last seen state — assuming first run.
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-20 13:53:19.460
+!MESSAGE Watcher added to the directory: /home/samuele/.espressif/tools
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-20 13:53:19.550
+!MESSAGE eimPath from eim_idf.json does not exist: /home/samuele/.espressif/eim_gui/eim_v0.19.0 (deleted)
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-20 13:53:19.924
+!MESSAGE Successfully read 10 supported targets and 3 preview targets
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-20 13:53:19.925
+!MESSAGE Dynamically loaded 13 toolchain elements from ESP-IDF
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-20 13:53:19.967
+!MESSAGE Successfully read 10 supported targets and 3 preview targets
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-20 13:53:19.968
+!MESSAGE Dynamically loaded 13 toolchain elements from ESP-IDF
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-20 13:53:19.968
+!MESSAGE Initializing toolchain...
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-20 13:53:19.968
+!MESSAGE idf_tools.py path: /home/samuele/.espressif/v5.5.5/esp-idf/tools/idf_tools.py
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-20 13:53:19.969
+!MESSAGE [/home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python, /home/samuele/.espressif/v5.5.5/esp-idf/tools/idf_tools.py, export, --format=key-value]
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-20 13:53:20.159
+!MESSAGE idf_tools.py export output: Not using an unsupported version of tool esp-clang found in PATH: unknown. To use it, run '/home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python /home/samuele/.espressif/v5.5.5/esp-idf/tools/idf_tools.py export --prefer-system'
+Not using an unsupported version of tool ninja found in PATH: 1.13.2. To use it, run '/home/samuele/.espressif/tools/python/v5.5.5/venv/bin/python /home/samuele/.espressif/v5.5.5/esp-idf/tools/idf_tools.py export --prefer-system'
+WARNING: The following issue occurred while accessing the ESP-IDF version file in the Python environment: [Errno 2] No such file or directory: '/home/samuele/.espressif/python_env/idf5.5_py3.14_env/idf_version.txt'. (Diagnostic information. It can be ignored.)
+OPENOCD_SCRIPTS=/home/samuele/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260424/openocd-esp32/share/openocd/scripts
+ESP_ROM_ELF_DIR=/home/samuele/.espressif/tools/esp-rom-elfs/20241011/
+ESP_IDF_VERSION=5.5
+PATH=/home/samuele/.espressif/tools/xtensa-esp-elf-gdb/17.1_20260402/xtensa-esp-elf-gdb/bin:/home/samuele/.espressif/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin:/home/samuele/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/bin:/home/samuele/.espressif/tools/esp-clang/esp-19.1.2_20250312/esp-clang/bin:/home/samuele/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin:/home/samuele/.espressif/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/bin:/home/samuele/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260424/openocd-esp32/bin:/home/samuele/.espressif/tools/ninja/1.12.1/:/home/samuele/.espressif/v5.5.5/esp-idf/tools:$PATH
+IDF_DEACTIVATE_FILE_PATH=/tmp/tmpfvox6k6oidf_71824
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-20 13:53:20.159
+!MESSAGE PATH: /home/samuele/.espressif/tools/xtensa-esp-elf-gdb/17.1_20260402/xtensa-esp-elf-gdb/bin:/home/samuele/.espressif/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin:/home/samuele/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/bin:/home/samuele/.espressif/tools/esp-clang/esp-19.1.2_20250312/esp-clang/bin:/home/samuele/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin:/home/samuele/.espressif/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/bin:/home/samuele/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260424/openocd-esp32/bin:/home/samuele/.espressif/tools/ninja/1.12.1/:/home/samuele/.espressif/v5.5.5/esp-idf/tools:$PATH
+
+!ENTRY com.espressif.idf.core 1 0 2026-09-20 13:53:20.159
+!MESSAGE [/home/samuele/.espressif/tools/xtensa-esp-elf-gdb/17.1_20260402/xtensa-esp-elf-gdb/bin:/home/samuele/.espressif/tools/riscv32-esp-elf-gdb/17.1_20260402/riscv32-esp-elf-gdb/bin:/home/samuele/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20260121/xtensa-esp-elf/bin:/home/samuele/.espressif/tools/esp-clang/esp-19.1.2_20250312/esp-clang/bin:/home/samuele/.espressif/tools/riscv32-esp-elf/esp-14.2.0_20260121/riscv32-esp-elf/bin:/home/samuele/.espressif/tools/esp32ulp-elf/2.38_20240113/esp32ulp-elf/bin:/home/samuele/.espressif/tools/openocd-esp32/v0.12.0-esp32-20260424/openocd-esp32/bin:/home/samuele/.espressif/tools/ninja/1.12.1/:/home/samuele/.espressif/v5.5.5/esp-idf/tools:$PATH]
