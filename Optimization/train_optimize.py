@@ -1,26 +1,4 @@
-"""
-Addestramento + ottimizzazione (pruning e weight clustering) del Tiny
-Transformer, in un unico script -- implementazione manuale, senza
-tensorflow-model-optimization (incompatibile con l'ambiente disponibile).
-
-Tre fasi in sequenza:
-  1) Addestramento normale (identico a train.py) -> modello base.
-  2) Fine-tuning con pruning magnitude-based: ogni epoca si azzerano i
-     pesi piu' piccoli in valore assoluto fino a raggiungere una
-     sparsita' target crescente (schedule cubico, stesso andamento del
-     PolynomialDecay di tfmot), e una maschera li mantiene a zero ad
-     ogni batch successivo mentre il resto della rete continua ad
-     allenarsi.
-  3) Fine-tuning con weight clustering: i pesi non nulli di ciascun
-     Dense vengono raggruppati in un numero fisso di centroidi
-     (k-means 1D scritto a mano), poi vincolati a coincidere con il
-     centroide piu' vicino per tutta la fase di fine-tuning (i pesi
-     azzerati dal pruning restano a zero, non vengono clusterizzati).
-
-Ogni fase viene valutata sul test set, cosi' il confronto base -> pruned
--> pruned+clustered e' esplicito. Nessuna dipendenza oltre a quelle gia'
-usate in train.py: stesso ambiente, nessun venv separato necessario.
-"""
+# Addestramento + ottimizzazione (pruning e weight clustering) del Tiny Transformer, in un unico script
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -69,9 +47,8 @@ def compile_model(model, lr=1e-4):
     )
 
 
-# ============================================================================
+
 # FASE 1: addestramento normale (identico a train.py)
-# ============================================================================
 model = build_model(
     seq_len=X_train.shape[1], input_dim=X_train.shape[2],
     d_model=64, ff_dim=128, num_layers=2, num_heads=8, dropout_rate=0.35,
@@ -108,17 +85,12 @@ print("\n=== Fase 1 completata: modello base ===")
 base_metrics = evaluate_and_print(model, "base")
 
 
-# ============================================================================
 # FASE 2: fine-tuning con pruning magnitude-based (manuale)
-# ============================================================================
 class MagnitudePruningCallback(keras.callbacks.Callback):
     """
-    Ad ogni inizio epoca ricalcola la soglia di magnitudine per la
-    sparsita' target di quell'epoca (schedule cubico, come il
-    PolynomialDecay di default di tfmot) e azzera i pesi sotto soglia
-    in ciascun kernel monitorato. Ad ogni fine batch riapplica la
-    maschera corrente, cosi' l'ottimizzatore non puo' far "risalire"
-    da zero i pesi gia' potati nel frattempo.
+    Ad ogni inizio epoca ricalcola la soglia di magnitudine per la sparsita' target di quell'epoca (schedule cubico, come il
+    PolynomialDecay di default di tfmot) e azzera i pesi sotto soglia in ciascun kernel monitorato. Ad ogni fine batch riapplica la
+    maschera corrente, cosi' l'ottimizzatore non puo' far "risalire" da zero i pesi gia' potati nel frattempo.
     """
 
     def __init__(self, dense_layers, final_sparsity, total_epochs):
@@ -165,7 +137,7 @@ print(f"\nDense sottoposti a pruning: {len(prunable_layers)}")
 pruning_cb = MagnitudePruningCallback(
     prunable_layers, final_sparsity=PRUNING_FINAL_SPARSITY, total_epochs=PRUNING_FINE_TUNE_EPOCHS)
 
-print(f"\n=== Fase 2: fine-tuning con pruning (sparsita' target {PRUNING_FINAL_SPARSITY:.0%}) ===")
+print(f"\nFase 2: fine-tuning con pruning (sparsita' target {PRUNING_FINAL_SPARSITY:.0%}) ===")
 pruned_model.fit(
     X_train, y_train,
     validation_data=(X_val, y_val),
@@ -186,12 +158,10 @@ print(f"Sparsita' complessiva sui kernel avvolti: {total_zeros/total_weights:.1%
 pruned_metrics = evaluate_and_print(pruned_model, "dopo pruning")
 
 
-# ============================================================================
-# FASE 3: fine-tuning con weight clustering (manuale, k-means 1D)
-# ============================================================================
+
+# FASE 3: fine-tuning con weight clustering
 def kmeans_1d(values, k, n_iter=CLUSTERING_KMEANS_ITERS):
-    """K-means su un array 1D di pesi. Inizializzazione via quantili
-    (deterministica, evita di dipendere da un seed casuale)."""
+    # K-means su un array 1D di pesi. Inizializzazione via quantili
     quantiles = np.linspace(0, 1, k)
     centroids = np.quantile(values, quantiles)
     for _ in range(n_iter):
@@ -210,11 +180,8 @@ def kmeans_1d(values, k, n_iter=CLUSTERING_KMEANS_ITERS):
 
 class ClusteringCallback(keras.callbacks.Callback):
     """
-    All'inizio del fine-tuning calcola, per ciascun kernel monitorato, i
-    centroidi via k-means SOLO sui pesi non nulli (preserva la sparsita'
-    del pruning). Ad ogni fine batch, i pesi non nulli vengono
-    "agganciati" al centroide piu' vicino tra quelli fissati -- i pesi
-    gia' a zero restano a zero.
+    All'inizio del fine-tuning calcola, per ciascun kernel monitorato, i centroidi via k-means SOLO sui pesi non nulli (preserva la sparsita'
+    del pruning). Ad ogni fine batch, i pesi non nulli vengono "agganciati" al centroide piu' vicino tra quelli fissati -- i pesi gia' a zero restano a zero.
     """
 
     def __init__(self, dense_layers, n_clusters):
@@ -222,11 +189,9 @@ class ClusteringCallback(keras.callbacks.Callback):
         self.dense_layers = dense_layers
         self.n_clusters = n_clusters
         self.centroids = []
-        self.zero_masks = []  # congelata all'inizio: NON va ricalcolata dal kernel
-                               # corrente, altrimenti un peso potato che si sposta
-                               # anche di poco per effetto del gradiente smette di
-                               # essere riconosciuto come zero e viene "riassorbito"
-                               # nel cluster piu' vicino invece di restare a zero.
+        self.zero_masks = []  # congelata all'inizio: non va ricalcolata dal kernel corrente, altrimenti un peso potato che si sposta
+                               # anche di poco per effetto del gradiente smette di essere riconosciuto come zero e viene "riassorbito"
+                               # nel cluster piu' vicino invece di restare a zero
 
     def on_train_begin(self, logs=None):
         for layer in self.dense_layers:
@@ -275,8 +240,7 @@ clustered_model.fit(
     verbose=2,
 )
 
-# verifica: sparsita' (deve essere rimasta al target del pruning) e numero
-# di valori distinti per kernel (dovrebbe essere <= n_clusters + lo zero)
+# verifica: sparsita' e numero di valori distinti per kernel (dovrebbe essere <= n_clusters + lo zero)
 post_zeros = sum(int(np.sum(l.kernel.numpy() == 0)) for l in clusterable_layers)
 post_total = sum(l.kernel.numpy().size for l in clusterable_layers)
 print(f"  Sparsita' dopo il clustering: {post_zeros/post_total:.1%} (deve restare ~{PRUNING_FINAL_SPARSITY:.0%})")
@@ -287,9 +251,8 @@ for layer in clusterable_layers[:2]:
 clustered_metrics = evaluate_and_print(clustered_model, "dopo pruning + clustering")
 
 
-# ============================================================================
+
 # Riepilogo e salvataggio
-# ============================================================================
 print("\n=== Confronto finale ===")
 print(f"{'metrica':12s} {'base':>10s} {'pruned':>10s} {'pruned+clustered':>18s}")
 for k in ["loss", "accuracy", "precision", "recall"]:

@@ -15,9 +15,7 @@
 #include "tiny_nids_transformer_model.h"   // g_tiny_nids_model, g_tiny_nids_model_len
 
 // 0 = normale (include ARP legittimo), 1 = solo SYN flood, 2 = solo ARP (MITM)
-// Per il deployment/inferenza live va lasciato a 0: vogliamo vedere TUTTO
-// il traffico (ARP + qualunque protocollo IP), non un solo tipo come
-// durante la raccolta dati per il dataset.
+// Per il deployment/inferenza live va lasciato a 0: vogliamo vedere tutto il traffico
 #define ATTACK_MODE 0
 
 char SSID[] = "ESP32_WiFi";
@@ -26,28 +24,20 @@ char STA_PSWD[] = "38089541";
 
 uint8_t apMac[6];   // MAC del nostro AP, usato dal filtro BSSID nello sniffer
 
-// ============================================================
+
 // TinyNIDS: inferenza -- coda tra sniffer callback e task dedicato
-// ============================================================
-// La callback dello sniffer resta minimale (estrae i campi, li mette in
-// coda); un task separato, a priorita' piu' bassa, consuma la coda,
-// accumula la finestra di 20 pacchetti e invoca l'interprete TFLite
-// Micro. Cosi' il lavoro pesante non gira mai nel contesto (time-critical)
-// del driver WiFi.
 
 #define SEQ_LEN     20
 #define N_FEATURES  16
 #define WINDOW_STEP 10   // overlap tra finestre consecutive, come nel preprocessing Python
 
-// Valori da norm_params.json (fit sul training set in preprocessing.py):
 #define LEN_MIN    66.0f
 #define LEN_MAX    1538.0f
 #define DT_LOG_MIN 0.0f
 #define DT_LOG_MAX 8.51579221050061f
 
 // Metti a 1 per il log dettagliato pacchetto-per-pacchetto usato in fase di
-// debug iniziale; per le misure di prestazioni conviene tenerlo a 0, cosi'
-// il log resta leggibile e i Serial.printf extra non influenzano i tempi.
+// debug iniziale; per le misure di prestazioni conviene tenerlo a 0
 #define VERBOSE_PACKET_DEBUG 0
 
 struct RawPacket {
@@ -64,10 +54,9 @@ static float windowBuffer[SEQ_LEN][N_FEATURES];
 static int windowFill = 0;          // quanti pacchetti validi ci sono ora nel buffer
 static int64_t lastPacketTime = -1; // per calcolare l'intervallo temporale
 
-// --- Metriche di prestazione -----------------------------------------------
-// Contatori cumulativi, mai resettati: min/max sono i valori estremi
-// osservati da quando il device e' acceso, avg e' calcolato su tutte le
-// inferenze/pacchetti visti finora. Stampati periodicamente da monitorTask.
+// Metriche di prestazione
+// Contatori cumulativi, mai resettati: min/max sono i valori estremi osservati da quando il device e' acceso, avg e' calcolato su tutte le
+// inferenze/pacchetti visti finora. Stampati periodicamente da monitorTask
 static volatile uint32_t g_packets_received = 0;   // pacchetti estratti dalla coda con successo
 static volatile uint32_t g_packets_dropped = 0;    // xQueueSend fallita (coda piena)
 static volatile uint64_t g_inference_count = 0;
@@ -86,7 +75,7 @@ TfLiteTensor* output = nullptr;
 }  // namespace
 
 // Converte un pacchetto grezzo nel vettore a 16 feature atteso dal modello,
-// con le stesse formule/ordine di preprocessing.py.
+// con le stesse formule/ordine di preprocessing.py
 static void packetToFeatures(const RawPacket &pkt, float out[N_FEATURES]) {
   for (int i = 0; i < 4; i++) out[i]     = pkt.srcIP[i] / 255.0f;
   for (int i = 0; i < 4; i++) out[4 + i] = pkt.dstIP[i] / 255.0f;
@@ -106,8 +95,7 @@ static void packetToFeatures(const RawPacket &pkt, float out[N_FEATURES]) {
   float lenNorm = (pkt.len - LEN_MIN) / (LEN_MAX - LEN_MIN);
   out[14] = lenNorm;
 
-  // delta in MILLISECONDI (coerente con preprocessing.py: total_seconds()*1000),
-  // poi log1p come nello script Python.
+  // delta in MILLISECONDI (coerente con preprocessing.py: total_seconds()*1000)
   float delta_ms = (lastPacketTime < 0) ? 0.0f : (pkt.timestamp_us - lastPacketTime) / 1000.0f;
   float dtLog = log1pf(delta_ms);
   float dtNorm = (dtLog - DT_LOG_MIN) / (DT_LOG_MAX - DT_LOG_MIN);
@@ -123,11 +111,6 @@ static void setupInference() {
     return;
   }
 
-  // Elenco DEFINITIVO, ricavato da list_ops.py sul .tflite finale
-  // (batch fisso a 1, divisione esclusa dalla quantizzazione -- per
-  // questo motivo il grafo contiene comunque QUANTIZE/DEQUANTIZE
-  // internamente, anche se l'input/output esterni sono float32): 17
-  // operatori distinti, 146 nodi totali nel grafo.
   static tflite::MicroMutableOpResolver<17> resolver;
   resolver.AddAdd();
   resolver.AddMul();
@@ -159,13 +142,7 @@ static void setupInference() {
   input = interpreter->input(0);
   output = interpreter->output(0);
 
-  // L'input/output del .tflite sono FLOAT32 (non int8): il
-  // QuantizationDebugger usato in fase di conversione, per escludere
-  // selettivamente l'operazione DIV dalla quantizzazione, non rispetta
-  // inference_input_type/inference_output_type -- restano al default
-  // float32. Il resto del grafo (i Dense interni, l'attenzione) e'
-  // comunque int8 internamente: le op QUANTIZE/DEQUANTIZE nel resolver
-  // gestiscono la conversione ai confini, non serve farla a mano qui.
+  // L'input/output del .tflite sono FLOAT32 (non int8) Il resto del grafo (i Dense interni, l'attenzione) e int8 internamente
   Serial.printf("[DEBUG] input tensor type=%d bytes=%d, output tensor type=%d bytes=%d\n",
                 (int)input->type, (int)input->bytes, (int)output->type, (int)output->bytes);
   Serial.printf("Tensor arena usata: %d / %d byte\n",
@@ -173,8 +150,6 @@ static void setupInference() {
 }
 
 static void runInference() {
-  // Input float32: si scrive direttamente il buffer della finestra,
-  // nessuna quantizzazione manuale (la fa il grafo internamente).
   memcpy(input->data.f, windowBuffer, sizeof(windowBuffer));
 
   int64_t t0 = esp_timer_get_time();
@@ -198,9 +173,6 @@ static void runInference() {
   bool isAttack = prob > 0.5f;
   Serial.printf("[TinyNIDS] probabilita'=%.4f -> %s (latenza=%uus)\n",
                 prob, isAttack ? "ATTACCO" : "normale", (unsigned)latency_us);
-  // TODO: qui puoi agganciare l'azione desiderata (LED, log strutturato,
-  // notifica, ecc.) invece del solo Serial.printf.
-}
 
 // Task che consuma la coda, accumula la finestra e invoca l'inferenza
 // ogni WINDOW_STEP pacchetti dopo il primo riempimento.
@@ -225,8 +197,7 @@ static void inferenceTask(void *pv) {
       float features[N_FEATURES];
       packetToFeatures(pkt, features);
 
-      // finestra scorrevole: shift a sinistra di una posizione, nuovo
-      // pacchetto in coda (equivalente all'overlap usato in preprocessing)
+      // finestra scorrevole: shift a sinistra di una posizione, nuovo pacchetto in coda
       if (windowFill < SEQ_LEN) {
         memcpy(windowBuffer[windowFill], features, sizeof(features));
         windowFill++;
@@ -240,11 +211,8 @@ static void inferenceTask(void *pv) {
         if (packetsSinceLastInference >= WINDOW_STEP) {
           runInference();
           packetsSinceLastInference = 0;
-          // Cede volontariamente la CPU: sotto flood sostenuto la coda non
-          // si svuota mai, quindi senza questo il task non si bloccherebbe
-          // mai e il task IDLE (priorita' piu' bassa) resterebbe affamato
-          // abbastanza a lungo da far scattare il watchdog -- osservato
-          // sperimentalmente durante il test.
+          // Cede volontariamente la CPU: sotto flood sostenuto la coda non si svuota mai, quindi senza questo il task non si bloccherebbe
+          // mai e il task IDLE (priorita' piu' bassa) resterebbe affamato abbastanza a lungo da far scattare il watchdog
           vTaskDelay(1);
         }
       }
@@ -252,10 +220,7 @@ static void inferenceTask(void *pv) {
   }
 }
 
-// Task separato, a bassa priorita', che stampa un riepilogo periodico
-// delle metriche di prestazione: latenza di inferenza, backlog della coda
-// (per capire se il sistema tiene il passo del traffico in ingresso),
-// pacchetti scartati, heap libero e minimo storico.
+// Task separato, a bassa priorita', che stampa un riepilogo periodico delle metriche di prestazione
 static void monitorTask(void *pv) {
   const TickType_t interval = pdMS_TO_TICKS(30000);  // ogni 30s
   while (true) {
@@ -288,9 +253,8 @@ static void startInferencePipeline() {
   xTaskCreate(monitorTask, "tinynids_monitor", 4096, nullptr, 1, nullptr);
 }
 
-// ============================================================
+
 // Sniffer / cattura promiscua
-// ============================================================
 void snifferCallBack(void *buf, wifi_promiscuous_pkt_type_t type) {
   if (type != WIFI_PKT_DATA) return;
 
@@ -408,9 +372,7 @@ void setup() {
   esp_netif_dhcps_start(ap_netif);
   Serial.println("DHCP server riavviato con DNS configurato");
 
-  // TinyNIDS: coda + task di inferenza, DEVE essere pronta prima di
-  // attivare lo sniffer (altrimenti la prima callback potrebbe trovare
-  // packetQueue non ancora creata).
+  // coda + task di inferenza, deve essere pronta prima di attivare lo sniffer
   startInferencePipeline();
 
   // sniffer / promiscuous mode

@@ -1,1 +1,18 @@
 /.metadata/
+ESP32-AP/.metadata/
+
+ESP32-AP/build/
+ESP32-AP/managed_components/
+ESP32-AP/dependencies.lock
+ESP32-AP/sdkconfig.old
+ESP32-AP/sdkconfig
+
+# Eclipse / Espressif-IDE
+ESP32-AP/.cproject
+ESP32-AP/.clangd
+ESP32-AP/.project
+ESP32-AP/.settings/
+
+# editor/IDE
+ESP32-AP/.vscode/
+ESP32-AP/.cache/

@@ -1,25 +1,3 @@
-"""
-Tiny Transformer per TinyNIDS -- versione ridisegnata sul dataset esteso.
-
-Decisioni di design (aggiornate per rendere necessaria l'ottimizzazione
-ESP32 -- in float32 il modello supera i 320 KB di SRAM disponibili, in
-int8 post-quantizzazione rientra comodamente): d_model=64, 2 layer
-encoder, 8 teste di attenzione, linear attention (feature map elu+1)
-multi-head, codifica posizionale sinusoidale fissa, feed-forward
-ff_dim=128, dropout=0.35, Pre-LayerNorm (per stabilita' con la
-profondita' aumentata), max pooling per l'aggregazione finale.
-
-Il numero di teste non aumenta il conteggio dei parametri (le proiezioni
-Q/K/V/O restano d_model x d_model, solo suddivise tra le teste): e' quindi
-"gratuito" in termini di rapporto parametri/esempi e viene usato per dare
-al modello piu' capacita' rappresentativa senza aumentare il rischio di
-overfitting.
-
-Pruning e weight clustering vengono applicati direttamente sui pesi di
-questo modello (vedi train_optimize.py), senza passare da
-tensorflow-model-optimization: nessuna dipendenza aggiuntiva qui.
-"""
-
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
@@ -27,7 +5,7 @@ from tensorflow.keras import layers
 
 
 def sinusoidal_positional_encoding(seq_len, d_model):
-    """Codifica posizionale fissa (nessun parametro da addestrare)."""
+    # Codifica posizionale fissa
     positions = np.arange(seq_len)[:, np.newaxis]
     dims = np.arange(d_model)[np.newaxis, :]
     angle_rates = 1 / np.power(10000, (2 * (dims // 2)) / np.float32(d_model))
@@ -63,8 +41,6 @@ class MultiHeadLinearAttention(layers.Layer):
         self.wo = layers.Dense(d_model)
 
     def get_config(self):
-        # Necessario perche' Keras sappia ricostruire il layer (con i
-        # giusti d_model/num_heads) al caricamento di un file .keras.
         config = super().get_config()
         config.update({"d_model": self.d_model, "num_heads": self.num_heads})
         return config
@@ -75,23 +51,14 @@ class MultiHeadLinearAttention(layers.Layer):
         return tf.nn.elu(x) + 1.0
 
     def split_heads(self, x):
-        # (batch, N, d_model) -> (batch, N, num_heads, head_dim)
-        # -1 al posto di tf.shape(x)[0]: la dimensione di batch resta
-        # libera senza generare un'operazione SHAPE nel grafo. La
-        # sequence length (x.shape[1]) e' invece nota staticamente in
-        # fase di costruzione del modello (finestre a lunghezza fissa),
-        # quindi va usata come intero Python, non ricalcolata a runtime:
-        # questo evita la catena SHAPE/GATHER/REDUCE_PROD/PACK che
-        # altrimenti il convertitore TFLite genera per ricostruire le
-        # dimensioni dinamicamente.
         seq_len = x.shape[1]
         x = tf.reshape(x, (-1, seq_len, self.num_heads, self.head_dim))
         return x
 
     def call(self, x):
         q = self.feature_map(self.split_heads(self.wq(x)))   # (batch, N, h, dh)
-        k = self.feature_map(self.split_heads(self.wk(x)))   # (batch, N, h, dh)
-        v = self.split_heads(self.wv(x))                      # (batch, N, h, dh)
+        k = self.feature_map(self.split_heads(self.wk(x)))
+        v = self.split_heads(self.wv(x))
 
         kv = tf.einsum("bnhd,bnhe->bhde", k, v)               # (batch, h, dh, dh): mai N x N
         k_sum = tf.reduce_sum(k, axis=1)                       # (batch, h, dh)
@@ -108,10 +75,8 @@ class MultiHeadLinearAttention(layers.Layer):
 
 class EncoderBlock(layers.Layer):
     """
-    Un blocco encoder Pre-LN: LayerNorm applicata PRIMA di attenzione e
-    feed-forward (non dopo, come nella versione precedente Post-LN), con
-    connessione residua attorno a ciascun sotto-blocco. Il Pre-LN da'
-    gradienti piu' stabili quando si impilano piu' layer, evitando che
+    Un blocco encoder Pre-LN: LayerNorm applicata PRIMA di attenzione e feed-forward (non dopo, come nella versione precedente Post-LN), con
+    connessione residua attorno a ciascun sotto-blocco. Il Pre-LN da' gradienti piu' stabili quando si impilano piu' layer, evitando che
     l'aumento di profondita' renda il training instabile.
     """
 
@@ -128,8 +93,7 @@ class EncoderBlock(layers.Layer):
         self.dropout2 = layers.Dropout(dropout_rate)
         self.norm2 = layers.LayerNormalization()
 
-        # salvati per get_config: servono a ricostruire attention/ff con
-        # le stesse dimensioni al caricamento di un file .keras
+        # salvati per get_config: servono a ricostruire attention/ff con le stesse dimensioni al caricamento di un file .keras
         self._d_model = d_model
         self._num_heads = num_heads
         self._ff_dim = ff_dim
@@ -167,8 +131,7 @@ def build_model(seq_len=20, input_dim=16, d_model=64, ff_dim=128,
 
     x = layers.LayerNormalization(name="final_norm")(x)  # norm finale, prassi comune col Pre-LN
 
-    x = layers.GlobalMaxPooling1D()(x)   # max pooling: cattura sia il pattern diffuso (SYN flood)
-                                          # sia il singolo pacchetto anomalo (MITM)
+    x = layers.GlobalMaxPooling1D()(x)   # max pooling: cattura sia il pattern diffuso (SYN flood) sia il singolo pacchetto anomalo (MITM)
 
     outputs = layers.Dense(1, activation="sigmoid")(x)
 
@@ -176,13 +139,7 @@ def build_model(seq_len=20, input_dim=16, d_model=64, ff_dim=128,
 
 
 def get_prunable_dense_layers(model):
-    """
-    Raccoglie i Dense "interni" su cui applicare pruning/clustering manuali:
-    query/key/value/output di ciascun blocco di attenzione, e i due Dense
-    della feed-forward di ciascun EncoderBlock. Esclude deliberatamente la
-    proiezione iniziale (16->d_model) e il classificatore finale (d_model->1):
-    sono piccoli, il grosso dei parametri sta in questi 6 per blocco.
-    """
+    # Raccoglie i Dense "interni" su cui applicare pruning/clustering manuali
     dense_layers = []
     for layer in model.layers:
         if isinstance(layer, EncoderBlock):

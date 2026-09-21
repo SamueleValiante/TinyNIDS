@@ -1,53 +1,4 @@
-"""
-Conversione del Tiny Transformer ottimizzato (pruning + weight clustering)
-in formato TFLite int8 per ESP32/TFLite Micro.
-
-*** FIX rispetto alla versione precedente ***
-La conversione full-integer (pesi E attivazioni in int8) faceva crollare
-l'accuracy da 1.00 a 0.60 sul test set. Causa isolata sperimentalmente:
-l'operazione di divisione (numerator / denominator) dentro
-MultiHeadLinearAttention.call(). Il risultato finale della divisione ha
-range piccolo (std ~0.6) ma nasce dal rapporto tra due tensori con range
-enorme (numerator: -820..620, denominator: 50..470, std ~100 ciascuno).
-Quantizzare numeratore e denominatore separatamente a 256 livelli int8
-introduce errori che, nel rapporto, NON si cancellano: il risultato
-collassa a pochi livelli discreti invece di restare continuo (verificato
-confrontando tensore per tensore Keras vs TFLite su singoli esempi).
-Conferma indipendente: lo schema di quantizzazione 16x8 (piu' preciso)
-rifiuta esplicitamente DIV come op non supportata.
-
-La correzione usa tf.lite.experimental.QuantizationDebugger per
-escludere selettivamente l'op DIV dalla quantizzazione (resta float32),
-lasciando tutto il resto del modello (Dense, LayerNorm, Elu, embedding
-posizionale, pooling) in int8 come prima. Risultato su tutto il test
-set: accuracy 0.605 -> 0.925, MAE vs Keras 0.474 -> 0.109, con pruning
-(50% sparsita') e clustering (centroidi) del tutto preservati.
-
-Effetto collaterale accettabile: l'input/output del file .tflite restano
-float32 invece di int8 (l'API del debugger non rispetta
-inference_input_type/inference_output_type). Per un input di 20x16
-valori e un output scalare l'overhead di RAM e' trascurabile rispetto al
-budget SRAM dell'ESP32; TFLite Micro gestisce nativamente tensori I/O
-float32 con calcolo interno int8, purche' il resolver registri anche il
-kernel float per DIV (oltre ai kernel int8 gia' necessari per gli altri
-op) -- con MicroMutableOpResolver basta chiamare AddDiv() come per gli
-altri op, la selezione int8/float avviene a runtime in base al tipo del
-tensore.
-
-Passi:
-  1) Carica tiny_nids_transformer_optimized.keras (output di train_optimize.py).
-  2) Converte in flatbuffer .tflite con quantizzazione int8 per pesi e
-     per le attivazioni, TRANNE l'op DIV che resta float32 (vedi sopra).
-  3) Verifica: confronto diretto Keras vs TFLite sulle predizioni (su
-     tutto il test set, non solo un campione), e controllo esplicito che
-     pruning (zeri) e clustering (valori quantizzati derivati dai
-     centroidi) siano sopravvissuti alla quantizzazione.
-  4) Esporta anche come header C (byte array) per il firmware ESP32.
-
-Se la conversione fallisce, il messaggio d'errore elenca le operazioni
-non supportate: e' il segnale che qualche layer custom va rivisto prima
-di proseguire.
-"""
+# Conversione del Tiny Transformer ottimizzato (pruning + weight clustering) in formato TFLite int8 per ESP32/TFLite Micro
 
 import numpy as np
 import tensorflow as tf
@@ -60,22 +11,21 @@ TFLITE_PATH = "tiny_nids_transformer.tflite"
 HEADER_PATH = "tiny_nids_transformer_model.h"
 N_CALIBRATION_SAMPLES = 200
 
-# --- 1) Caricamento del modello Keras -------------------------------------
+# Caricamento del modello Keras
 model = keras.models.load_model(
     MODEL_PATH,
     custom_objects={"MultiHeadLinearAttention": MultiHeadLinearAttention, "EncoderBlock": EncoderBlock},
 )
 model.summary()
 
-# Statistiche PRIMA della conversione, come riferimento per il controllo
-# post-quantizzazione (zeri del pruning, centroidi del clustering).
+# post-quantizzazione (zeri del pruning, centroidi del clustering)
 prunable_layers_pre = get_prunable_dense_layers(model)
 zeros_pre = sum(int(np.sum(l.kernel.numpy() == 0)) for l in prunable_layers_pre)
 weights_pre = sum(l.kernel.numpy().size for l in prunable_layers_pre)
 print(f"Prima della conversione: sparsita' = {zeros_pre/weights_pre:.1%}, "
       f"valori distinti nel primo layer = {len(np.unique(prunable_layers_pre[0].kernel.numpy()))}")
 
-# --- 2) Representative dataset ---------------------------------------------
+# Representative dataset
 data = np.load("dataset_preprocessato.npz")
 X_train = data["X_train"].astype(np.float32)
 X_test = data["X_test"].astype(np.float32)
@@ -91,28 +41,27 @@ def representative_dataset():
         yield [sample[np.newaxis, :, :]]
 
 
-# --- 3) Conversione + quantizzazione int8, con DIV escluso -----------------
+# Conversione + quantizzazione int8, con DIV escluso
 fixed_batch_model = build_model(
     seq_len=20, input_dim=16, d_model=64, ff_dim=128,
     num_layers=2, num_heads=8, dropout_rate=0.35, batch_size=1,
 )
-fixed_batch_model(np.zeros((1, 20, 16), dtype=np.float32))  # istanzia le variabili
+fixed_batch_model(np.zeros((1, 20, 16), dtype=np.float32))
+
+# istanzia le variabili
 fixed_batch_model.set_weights(model.get_weights())
 
 converter = tf.lite.TFLiteConverter.from_keras_model(fixed_batch_model)
 converter.optimizations = [tf.lite.Optimize.DEFAULT]
 converter.representative_dataset = representative_dataset
+
 # Permette il fallback a float32 per gli op non quantizzati esplicitamente
-# (qui: DIV). Senza TFLITE_BUILTINS nella lista, il convertitore
-# proverebbe comunque a forzare DIV in int8 (e' un op "supportato" anche
-# se numericamente fragile per range cosi' ampi) e il denylist sotto non
-# avrebbe alternative dove ricadere.
 converter.target_spec.supported_ops = [
     tf.lite.OpsSet.TFLITE_BUILTINS_INT8,
     tf.lite.OpsSet.TFLITE_BUILTINS,
 ]
 
-print("\nConversione in corso, con l'op DIV esplicitamente esclusa dalla quantizzazione int8...")
+print("\nConversione in corso...")
 debug_options = tf.lite.experimental.QuantizationDebugOptions(denylisted_ops=["DIV"])
 debugger = tf.lite.experimental.QuantizationDebugger(
     converter=converter, debug_dataset=representative_dataset, debug_options=debug_options,
@@ -129,12 +78,9 @@ interpreter.allocate_tensors()
 input_details = interpreter.get_input_details()[0]
 output_details = interpreter.get_output_details()[0]
 print(f"\nTipo tensore input: {input_details['dtype'].__name__}  "
-      f"output: {output_details['dtype'].__name__}  "
-      f"(float32 e' atteso: solo DIV resta non quantizzata, il resto e' int8)")
+      f"output: {output_details['dtype'].__name__}  ")
 
-# Valutazione sull'INTERO test set (non solo un campione): la versione
-# precedente controllava 200 esempi, qui usiamo tutto il test set per una
-# stima piu' affidabile dell'accuracy reale del firmware.
+# Valutazione sull'intero test set
 n_check = len(X_test)
 keras_preds = model.predict(X_test, verbose=0).flatten()
 tflite_preds = np.zeros(n_check)
@@ -166,14 +112,8 @@ print(f"  TFLite preds: min={tflite_preds.min():.4f} max={tflite_preds.max():.4f
 
 if tflite_acc < 0.9:
     print("\n  ATTENZIONE: l'accuracy resta bassa anche con DIV esclusa.")
-    print("  Prossimi passi da provare, in ordine: (1) aumentare")
-    print("  N_CALIBRATION_SAMPLES e verificare che copra bene entrambe le")
-    print("  classi; (2) fine-tuning quantization-aware dopo il pruning+")
-    print("  clustering; (3) rivedere la formula della linear attention per")
-    print("  ridurre la dinamica di numerator/denominator (es. normalizzare")
-    print("  phi(k) lungo la sequenza prima di kv/k_sum).")
 
-# --- 5) Verifica pruning/clustering sopravvissuti alla quantizzazione ------
+# Verifica pruning/clustering sopravvissuti alla quantizzazione
 print("\nControllo pruning/clustering sui pesi quantizzati:")
 all_details = interpreter.get_tensor_details()
 checked = 0
@@ -190,20 +130,13 @@ for t in all_details:
         if checked >= 4:
             break
 if checked == 0:
-    print("  Nessun tensore 64x64 trovato con questo criterio: verificare manualmente con "
-          "interpreter.get_tensor_details() se serve un controllo piu' approfondito.")
-else:
-    print("  Nota: il numero di 'valori distinti' qui e' tipicamente MAGGIORE dei 17")
-    print("  centroidi originali (quantizzazione per-canale: stessi 17 centroidi float,")
-    print("  ma ogni canale/colonna ha una scala int8 leggermente diversa). Non e' un bug:")
-    print("  la sparsita' al 50% e' la proprieta' che conta davvero, ed e' preservata.")
+    print("  Nessun tensore 64x64 trovato con questo criterio")
 
-# --- 6) Esportazione come header C per il firmware ESP32 --------------------
+# Esportazione come header C per il firmware ESP32
 array_name = "g_tiny_nids_model"
 with open(HEADER_PATH, "w") as f:
-    f.write("// File generato automaticamente da convert.py -- non modificare a mano.\n")
-    f.write("// NOTA: input/output del modello sono float32 (solo l'op DIV interna\n")
-    f.write("// resta non quantizzata); il firmware deve passare/leggere tensori float32,\n")
+    f.write("// File generato automaticamente da convert.py, non modificare a mano.\n")
+    f.write("// il firmware deve passare/leggere tensori float32,\n")
     f.write("// non int8, in ingresso e in uscita all'interprete TFLite Micro.\n")
     f.write("#ifndef TINY_NIDS_MODEL_H\n#define TINY_NIDS_MODEL_H\n\n")
     f.write(f"alignas(8) const unsigned char {array_name}[] = {{\n")

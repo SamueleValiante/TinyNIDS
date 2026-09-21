@@ -1,12 +1,4 @@
-"""
-Preprocessing del dataset TinyNIDS: CSV grezzo -> sequenze numeriche per il Tiny Transformer.
-
-Vettore per pacchetto (16 dim): 4 ottetti IP src + 4 ottetti IP dst + 6 one-hot
-protocollo (1,2,6,17,901,902) + lunghezza + delta temporale dal pacchetto precedente.
-Sequenza: N=20, step=10. Finestre per sessione, etichetta "attacco" se contiene
-almeno un pacchetto d'attacco. Split 60/20/20 per sessione poi unito. Normalizzazione
-(min-max, fit solo su train) su lunghezza e delta (quest'ultimo con log1p prima).
-"""
+# Preprocessing del dataset TinyNIDS: CSV grezzo -> sequenze numeriche per il Tiny Transformer
 
 import csv
 import re
@@ -16,9 +8,7 @@ from collections import Counter
 import json
 
 
-# ============================================================
 # CONFIGURAZIONE
-# ============================================================
 CSV_PATH = "dataset.csv"
 
 SEQUENCE_LENGTH = 20
@@ -36,11 +26,10 @@ VECTOR_DIM = 4 + 4 + NUM_PROTOCOLS + 1 + 1   # = 16
 IDX_LENGTH = 14
 IDX_DELTA = 15
 
-# ============================================================
+
 # STEP 0: lettura CSV
-# ============================================================
 def fix_timestamp(ts):
-    """Normalizza timestamp con componenti non paddati (es. '17:30:4' -> '17:30:04.000')."""
+    """Normalizza timestamp con componenti non paddati (es. '17:30:4' -> '17:30:04.000')"""
     m = re.match(r"(\d{4}-\d{2}-\d{2})T(\d{1,2}):(\d{1,2}):(\d{1,2})(?:\.(\d+))?", ts)
     if not m:
         raise ValueError(f"Timestamp non riconosciuto: {ts!r}")
@@ -68,11 +57,9 @@ def load_dataset(path):
     return packets
 
 
-# ============================================================
 # STEP 1: sessioni di cattura
-# ============================================================
 def split_into_sessions(packets, gap_threshold_s=SESSION_GAP_THRESHOLD_S):
-    """Separa in sessioni distinte dove il gap tra pacchetti supera la soglia."""
+    """Separa in sessioni distinte dove il gap tra pacchetti supera la soglia"""
     sessions = []
     current = [packets[0]]
     for prev, curr in zip(packets, packets[1:]):
@@ -85,9 +72,7 @@ def split_into_sessions(packets, gap_threshold_s=SESSION_GAP_THRESHOLD_S):
     return sessions
 
 
-# ============================================================
 # STEP 2: encoding del pacchetto
-# ============================================================
 def ip_to_octets(ip_str):
     return [int(part) for part in ip_str.split(".")]
 
@@ -114,7 +99,7 @@ def encode_packet(packet, prev_timestamp):
 
 
 def encode_session(session_packets):
-    """Codifica i pacchetti di una sessione, escludendo il primo (nessun delta valido)."""
+    """Codifica i pacchetti di una sessione, escludendo il primo"""
     vectors = []
     prev_ts = None
     for i, packet in enumerate(session_packets):
@@ -126,9 +111,7 @@ def encode_session(session_packets):
     return vectors
 
 
-# ============================================================
 # STEP 3: finestre/sequenze
-# ============================================================
 def build_windows(vectors_with_labels, seq_len=SEQUENCE_LENGTH, step=WINDOW_STEP):
     """Finestre scorrevoli su UNA sessione. Etichetta 'attacco' se presente almeno un pacchetto d'attacco."""
     windows = []
@@ -142,11 +125,10 @@ def build_windows(vectors_with_labels, seq_len=SEQUENCE_LENGTH, step=WINDOW_STEP
     return windows
 
 
-# ============================================================
-# STEP 4: split train/val/test (per sessione, poi unito)
-# ============================================================
+
+# STEP 4: split train/val/test
 def split_windows(windows, train_frac=TRAIN_FRAC, val_frac=VAL_FRAC):
-    """Split cronologico (no shuffle) sulle finestre di una sessione."""
+    """Split cronologico (no shuffle) sulle finestre di una sessione"""
     n = len(windows)
     n_train = int(n * train_frac)
     n_val = int(n * val_frac)
@@ -156,9 +138,7 @@ def split_windows(windows, train_frac=TRAIN_FRAC, val_frac=VAL_FRAC):
     return train, val, test
 
 
-# ============================================================
 # STEP 5: normalizzazione (fit solo su train)
-# ============================================================
 def fit_normalization_params(train_windows):
     all_lengths = []
     all_deltas_log = []
@@ -195,9 +175,7 @@ def normalize_windows(windows, params):
     return [([normalize_vector(v, params) for v in vecs], label) for vecs, label in windows]
 
 
-# ============================================================
 # STEP 6: class weights (solo su train)
-# ============================================================
 def compute_class_weights(train_windows):
     counts = Counter(label for _, label in train_windows)
     total = sum(counts.values())
@@ -205,18 +183,14 @@ def compute_class_weights(train_windows):
     return {label: total / (n_classes * count) for label, count in counts.items()}
 
 
-# ============================================================
 # STEP 7: conversione in array numpy
-# ============================================================
 def windows_to_arrays(windows):
     X = np.array([vecs for vecs, _ in windows], dtype=np.float32)
     y = np.array([1.0 if label == "attacco" else 0.0 for _, label in windows], dtype=np.float32)
     return X, y
 
 
-# ============================================================
 # PIPELINE COMPLETA
-# ============================================================
 def main():
     print("Caricamento dataset...")
     packets = load_dataset(CSV_PATH)

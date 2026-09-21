@@ -15,9 +15,7 @@
 #include "tiny_nids_transformer_model.h"   // g_tiny_nids_model, g_tiny_nids_model_len
 
 // 0 = normale (include ARP legittimo), 1 = solo SYN flood, 2 = solo ARP (MITM)
-// Per il deployment/inferenza live va lasciato a 0: vogliamo vedere TUTTO
-// il traffico (ARP + qualunque protocollo IP), non un solo tipo come
-// durante la raccolta dati per il dataset.
+// Per il deployment/inferenza live va lasciato a 0
 #define ATTACK_MODE 0
 
 char SSID[] = "ESP32_WiFi";
@@ -26,20 +24,14 @@ char STA_PSWD[] = "38089541";
 
 uint8_t apMac[6];   // MAC del nostro AP, usato dal filtro BSSID nello sniffer
 
-// ============================================================
+
 // TinyNIDS: inferenza -- coda tra sniffer callback e task dedicato
-// ============================================================
-// La callback dello sniffer resta minimale (estrae i campi, li mette in
-// coda); un task separato, a priorita' piu' bassa, consuma la coda,
-// accumula la finestra di 20 pacchetti e invoca l'interprete TFLite
-// Micro. Cosi' il lavoro pesante non gira mai nel contesto (time-critical)
-// del driver WiFi.
 
 #define SEQ_LEN     20
 #define N_FEATURES  16
 #define WINDOW_STEP 10   // overlap tra finestre consecutive, come nel preprocessing Python
 
-// Valori da norm_params.json (fit sul training set in preprocessing.py):
+
 #define LEN_MIN    66.0f
 #define LEN_MAX    1538.0f
 #define DT_LOG_MIN 0.0f
@@ -70,7 +62,7 @@ TfLiteTensor* output = nullptr;
 }  // namespace
 
 // Converte un pacchetto grezzo nel vettore a 16 feature atteso dal modello,
-// con le stesse formule/ordine di preprocessing.py.
+// con le stesse formule/ordine di preprocessing.py
 static void packetToFeatures(const RawPacket &pkt, float out[N_FEATURES]) {
   for (int i = 0; i < 4; i++) out[i]     = pkt.srcIP[i] / 255.0f;
   for (int i = 0; i < 4; i++) out[4 + i] = pkt.dstIP[i] / 255.0f;
@@ -90,8 +82,7 @@ static void packetToFeatures(const RawPacket &pkt, float out[N_FEATURES]) {
   float lenNorm = (pkt.len - LEN_MIN) / (LEN_MAX - LEN_MIN);
   out[14] = lenNorm;
 
-  // delta in MILLISECONDI (coerente con preprocessing.py: total_seconds()*1000),
-  // poi log1p come nello script Python.
+  // delta in MILLISECONDI (coerente con preprocessing.py: total_seconds()*1000), poi log1p come nello script Python
   float delta_ms = (lastPacketTime < 0) ? 0.0f : (pkt.timestamp_us - lastPacketTime) / 1000.0f;
   float dtLog = log1pf(delta_ms);
   float dtNorm = (dtLog - DT_LOG_MIN) / (DT_LOG_MAX - DT_LOG_MIN);
@@ -107,11 +98,7 @@ static void setupInference() {
     return;
   }
 
-  // Elenco DEFINITIVO, ricavato da list_ops.py sul .tflite finale
-  // (batch fisso a 1, divisione esclusa dalla quantizzazione -- per
-  // questo motivo il grafo contiene comunque QUANTIZE/DEQUANTIZE
-  // internamente, anche se l'input/output esterni sono float32): 17
-  // operatori distinti, 146 nodi totali nel grafo.
+
   static tflite::MicroMutableOpResolver<17> resolver;
   resolver.AddAdd();
   resolver.AddMul();
@@ -143,13 +130,8 @@ static void setupInference() {
   input = interpreter->input(0);
   output = interpreter->output(0);
 
-  // L'input/output del .tflite sono FLOAT32 (non int8): il
-  // QuantizationDebugger usato in fase di conversione, per escludere
-  // selettivamente l'operazione DIV dalla quantizzazione, non rispetta
-  // inference_input_type/inference_output_type -- restano al default
-  // float32. Il resto del grafo (i Dense interni, l'attenzione) e'
-  // comunque int8 internamente: le op QUANTIZE/DEQUANTIZE nel resolver
-  // gestiscono la conversione ai confini, non serve farla a mano qui.
+  // L'input/output del .tflite sono FLOAT32: il QuantizationDebugger usato in fase di conversione, per escludere
+  // selettivamente l'operazione DIV dalla quantizzazione, non rispetta inference_input_type/inference_output_type restano al default
   Serial.printf("[DEBUG] input tensor type=%d bytes=%d, output tensor type=%d bytes=%d\n",
                 (int)input->type, (int)input->bytes, (int)output->type, (int)output->bytes);
   Serial.printf("Tensor arena usata: %d / %d byte\n",
@@ -157,8 +139,6 @@ static void setupInference() {
 }
 
 static void runInference() {
-  // Input float32: si scrive direttamente il buffer della finestra,
-  // nessuna quantizzazione manuale (la fa il grafo internamente).
   memcpy(input->data.f, windowBuffer, sizeof(windowBuffer));
 
   if (interpreter->Invoke() != kTfLiteOk) {
@@ -166,17 +146,14 @@ static void runInference() {
     return;
   }
 
-  // Output float32: e' gia' la probabilita', nessuna dequantizzazione.
+  // Output float32: e' gia' la probabilita', nessuna dequantizzazione
   float prob = output->data.f[0];
 
   bool isAttack = prob > 0.5f;
   Serial.printf("[TinyNIDS] probabilita'=%.4f -> %s\n", prob, isAttack ? "ATTACCO" : "normale");
-  // TODO: qui puoi agganciare l'azione desiderata (LED, log strutturato,
-  // notifica, ecc.) invece del solo Serial.printf.
 }
 
-// Task che consuma la coda, accumula la finestra e invoca l'inferenza
-// ogni WINDOW_STEP pacchetti dopo il primo riempimento.
+// Task che consuma la coda, accumula la finestra e invoca l'inferenza ogni WINDOW_STEP pacchetti dopo il primo riempimento.
 static void inferenceTask(void *pv) {
   setupInference();
 
@@ -215,9 +192,8 @@ static void startInferencePipeline() {
   xTaskCreate(inferenceTask, "tinynids_inference", 8192, nullptr, 1, nullptr);
 }
 
-// ============================================================
+
 // Sniffer / cattura promiscua
-// ============================================================
 void snifferCallBack(void *buf, wifi_promiscuous_pkt_type_t type) {
   if (type != WIFI_PKT_DATA) return;
 
@@ -331,9 +307,7 @@ void setup() {
   esp_netif_dhcps_start(ap_netif);
   Serial.println("DHCP server riavviato con DNS configurato");
 
-  // TinyNIDS: coda + task di inferenza, DEVE essere pronta prima di
-  // attivare lo sniffer (altrimenti la prima callback potrebbe trovare
-  // packetQueue non ancora creata).
+  // coda + task di inferenza, deve essere pronta prima di attivare lo sniffer
   startInferencePipeline();
 
   // sniffer / promiscuous mode

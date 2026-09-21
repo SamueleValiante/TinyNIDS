@@ -1,0 +1,16 @@
+# ESP-IDF (generato)
+DataAcquisitionModule/ESP32-AP/build/
+DataAcquisitionModule/ESP32-AP/managed_components/
+DataAcquisitionModule/ESP32-AP/dependencies.lock
+DataAcquisitionModule/ESP32-AP/sdkconfig.old
+DataAcquisitionModule/ESP32-AP/sdkconfig
+
+# Eclipse / Espressif-IDE
+DataAcquisitionModule/ESP32-AP/.cproject
+DataAcquisitionModule/ESP32-AP/.clangd
+DataAcquisitionModule/ESP32-AP/.project
+DataAcquisitionModule/ESP32-AP/.settings/
+
+# editor/IDE
+DataAcquisitionModule/ESP32-AP/.vscode/
+DataAcquisitionModule/ESP32-AP/.cache/

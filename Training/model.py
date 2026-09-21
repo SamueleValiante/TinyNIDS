@@ -1,21 +1,3 @@
-"""
-Tiny Transformer per TinyNIDS -- versione ridisegnata sul dataset esteso.
-
-Decisioni di design (aggiornate per rendere necessaria l'ottimizzazione
-ESP32 -- in float32 il modello supera i 320 KB di SRAM disponibili, in
-int8 post-quantizzazione rientra comodamente): d_model=64, 2 layer
-encoder, 8 teste di attenzione, linear attention (feature map elu+1)
-multi-head, codifica posizionale sinusoidale fissa, feed-forward
-ff_dim=128, dropout=0.35, Pre-LayerNorm (per stabilita' con la
-profondita' aumentata), max pooling per l'aggregazione finale.
-
-Il numero di teste non aumenta il conteggio dei parametri (le proiezioni
-Q/K/V/O restano d_model x d_model, solo suddivise tra le teste): e' quindi
-"gratuito" in termini di rapporto parametri/esempi e viene usato per dare
-al modello piu' capacita' rappresentativa senza aumentare il rischio di
-overfitting.
-"""
-
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
@@ -23,7 +5,7 @@ from tensorflow.keras import layers
 
 
 def sinusoidal_positional_encoding(seq_len, d_model):
-    """Codifica posizionale fissa (nessun parametro da addestrare)."""
+    # Codifica posizionale fissa
     positions = np.arange(seq_len)[:, np.newaxis]
     dims = np.arange(d_model)[np.newaxis, :]
     angle_rates = 1 / np.power(10000, (2 * (dims // 2)) / np.float32(d_model))
@@ -59,8 +41,6 @@ class MultiHeadLinearAttention(layers.Layer):
         self.wo = layers.Dense(d_model)
 
     def feature_map(self, x):
-        # elu(x)+1: garantisce valori non negativi, richiesti perche' il
-        # trucco della linear attention si comporti come dei "pesi" validi.
         return tf.nn.elu(x) + 1.0
 
     def split_heads(self, x):
@@ -72,8 +52,8 @@ class MultiHeadLinearAttention(layers.Layer):
 
     def call(self, x):
         q = self.feature_map(self.split_heads(self.wq(x)))   # (batch, N, h, dh)
-        k = self.feature_map(self.split_heads(self.wk(x)))   # (batch, N, h, dh)
-        v = self.split_heads(self.wv(x))                      # (batch, N, h, dh)
+        k = self.feature_map(self.split_heads(self.wk(x)))
+        v = self.split_heads(self.wv(x))
 
         kv = tf.einsum("bnhd,bnhe->bhde", k, v)               # (batch, h, dh, dh): mai N x N
         k_sum = tf.reduce_sum(k, axis=1)                       # (batch, h, dh)
@@ -92,11 +72,8 @@ class MultiHeadLinearAttention(layers.Layer):
 
 class EncoderBlock(layers.Layer):
     """
-    Un blocco encoder Pre-LN: LayerNorm applicata PRIMA di attenzione e
-    feed-forward (non dopo, come nella versione precedente Post-LN), con
-    connessione residua attorno a ciascun sotto-blocco. Il Pre-LN da'
-    gradienti piu' stabili quando si impilano piu' layer, evitando che
-    l'aumento di profondita' renda il training instabile.
+    Un blocco encoder Pre-LN: LayerNorm applicata PRIMA di attenzione e feed-forward con connessione residua attorno a ciascun sotto-blocco
+    Il Pre-LN da' gradienti piu' stabili quando si impilano piu' layer, evitando che l'aumento di profondita' renda il training instabile
     """
 
     def __init__(self, d_model, num_heads, ff_dim, dropout_rate, **kwargs):
