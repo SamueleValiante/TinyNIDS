@@ -1,3 +1,0 @@
-CompileFlags:
-  CompilationDatabase: /home/samuele/espressif-ide-projects/ESP32-AP/build
-  Remove: [-m*, -f*]
