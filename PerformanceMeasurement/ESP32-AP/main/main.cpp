@@ -173,6 +173,7 @@ static void runInference() {
   bool isAttack = prob > 0.5f;
   Serial.printf("[TinyNIDS] probabilita'=%.4f -> %s (latenza=%uus)\n",
                 prob, isAttack ? "ATTACCO" : "normale", (unsigned)latency_us);
+}
 
 // Task che consuma la coda, accumula la finestra e invoca l'inferenza
 // ogni WINDOW_STEP pacchetti dopo il primo riempimento.
