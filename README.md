@@ -1,6 +1,6 @@
 # TinyNIDS
 
-Sistema di rilevamento delle intrusioni di rete (SYN Flood/DDoS e MITM/ARP Spoofing) basato su un Tiny Transformer, ottimizzato (pruning, weight clustering, quantizzazione int8) ed eseguito direttamente su un ESP32, che funge sia da access point sia da sniffer del traffico che attraversa la propria rete.
+Sistema di rilevamento delle intrusioni di rete (SYN Flood/DDoS e MITM/ARP Spoofing) basato su un Tiny Transformer, ottimizzato ed eseguito direttamente su un ESP32, che funge sia da access point sia da sniffer del traffico che attraversa la propria rete.
 
 ## Pipeline del progetto
 
