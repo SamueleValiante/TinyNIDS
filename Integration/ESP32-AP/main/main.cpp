@@ -19,8 +19,8 @@
 #define ATTACK_MODE 0
 
 char SSID[] = "ESP32_WiFi";
-char STA_SSID[] = "TP-LINK_8972";
-char STA_PSWD[] = "38089541";
+char STA_SSID[] = "<YOUR WIFI SSID>";  // Riempire il seguente campo
+char STA_PSWD[] = "<YOUR WIFI PSW>";   // Riempire il seguente campo
 
 uint8_t apMac[6];   // MAC del nostro AP, usato dal filtro BSSID nello sniffer
 
