@@ -38,4 +38,4 @@ Le tre versioni del firmware (`DataAcquisitionModule/ESP32-AP`, `Integration/ESP
 - **Vedere il sistema classificare il traffico in tempo reale** → `Integration/ESP32-AP`
 - **Misurare latenza, throughput e memoria sotto carico** → `PerformanceMeasurement/ESP32-AP`
 
-Al primo utilizzo di una cartella, se `idf.py build` segnala partizione troppo piccola o dipendenze mancanti, verifica che `sdkconfig.defaults` sia presente nella cartella (definisce la tabella delle partizioni custom necessaria per contenere il modello) e che il component manager abbia scaricato `managed_components/` (avviene automaticamente al primo build, serve connessione a internet).
+Al primo utilizzo di una cartella, se la build segnala partizione troppo piccola o dipendenze mancanti, verifica che `sdkconfig.defaults` sia presente nella cartella (definisce la tabella delle partizioni custom necessaria per contenere il modello) e che il component manager abbia scaricato `managed_components/` (avviene automaticamente al primo build, serve connessione a internet).
