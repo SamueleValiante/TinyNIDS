@@ -25,16 +25,12 @@ Ogni cartella `.../ESP32-AP` è un progetto **ESP-IDF** indipendente (creato con
 
 ## Flashare e monitorare il firmware
 
-Le tre versioni del firmware (`DataAcquisitionModule/ESP32-AP`, `Integration/ESP32-AP`, `PerformanceMeasurement/ESP32-AP`) si compilano e flashano allo stesso modo. Da dentro la cartella `ESP32-AP` della versione desiderata:
+Le tre versioni del firmware (`DataAcquisitionModule/ESP32-AP`, `Integration/ESP32-AP`, `PerformanceMeasurement/ESP32-AP`) si compilano e flashano allo stesso modo. 
 
-```bash
-idf.py -p /dev/ttyUSB0 build flash monitor
-```
-
-- Sostituisci `/dev/ttyUSB0` con la porta seriale a cui è collegato l'ESP32 (`COMx` su Windows).
-- `build` compila, `flash` carica il firmware, `monitor` apre il monitor seriale — si possono anche lanciare separatamente (`idf.py build`, poi `idf.py -p /dev/ttyUSB0 flash`, poi `idf.py -p /dev/ttyUSB0 monitor`).
-- Per uscire dal monitor: `Ctrl+]`.
-- Se preferisci l'interfaccia grafica di Espressif-IDE: importa la cartella `ESP32-AP` come progetto, poi usa i pulsanti Build / Flash / Monitor della toolbar.
+- Apri Espressif-IDE su una delle cartelle menzionate
+- importa la cartella `ESP32-AP` come progetto, poi usa i pulsanti Build / Flash / Monitor della toolbar.
+- Se il monitor non si avvia dopo il flash da solo, avvialo dal terminale integrato nella IDE, da li digita `idf.py -p /dev/ttyUSB0 flash monitor`
+- `/dev/ttyUSB0` è la porta seriale a cui è collegato il tuo esp32
 
 **Quale versione flashare, a seconda di cosa vuoi fare:**
 
